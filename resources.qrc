@@ -1,0 +1,33 @@
+<RCC>
+    <qresource prefix="/tb">
+        <file>assets/mainTB_Font.svg</file>
+        <file>assets/mainTB_Open.svg</file>
+        <file>assets/mainTB_Quit.svg</file>
+        <file>assets/mainTB_Save.svg</file>
+        <file>assets/mainTB_SaveAs.svg</file>
+        <file>assets/mainTB_New.svg</file>
+        <file>assets/mainTB_Copy.svg</file>
+        <file>assets/mainTB_Cut.svg</file>
+        <file>assets/mainTB_Paste.svg</file>
+        <file>assets/mainTB_Redo.svg</file>
+        <file>assets/mainTB_SelectAll.svg</file>
+        <file>assets/mainTB_Undo.svg</file>
+        <file>assets/mainTB_Info.svg</file>
+        <file>assets/mainTB_Settings.svg</file>
+        <file>assets/mainTB_Quit_2.svg</file>
+        <file>assets/mainTB_Edit.svg</file>
+        <file>assets/mainTB_Edit_2.svg</file>
+        <file>assets/mainTB_Key.svg</file>
+        <file>assets/mainTB_Export.svg</file>
+        <file>assets/mainTB_Sync.svg</file>
+        <file>assets/mainTB_FormatBold.svg</file>
+        <file>assets/mainTB_FormatItalic.svg</file>
+        <file>assets/mainTB_FormatUnderlined.svg</file>
+        <file>assets/mainTB_FormatCode.svg</file>
+        <file>assets/mainTB_FormatHighlight.svg</file>
+        <file>assets/mainTB_FormatStrikethrough.svg</file>
+    </qresource>
+    <qresource prefix="/png">
+        <file>assets/logo.png</file>
+    </qresource>
+</RCC>
