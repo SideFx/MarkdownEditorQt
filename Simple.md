@@ -14,9 +14,9 @@ Lorem ipsum dolor sit amet.
 
 [Link to Google](https://www.google.com)
 
-Picture fetched from the MSYS site.
+Picture fetched from the MSYS Github site.
 
-![Test02](https://packages.msys2.org/static/images/logo.svg)
+![Test02](https://avatars.githubusercontent.com/u/6759993?s=200&v=4)
 
 
 
