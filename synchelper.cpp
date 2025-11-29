@@ -66,8 +66,8 @@ void SyncHelper::syncToViewer() {
     processImages();
     // scroll to position by searching for anchor
     QTextDocument* doc = m_viewer->document();
-    doc->adjustSize(); // reformat html (important for lists)
-    for (QTextBlock block = doc->begin(); block != doc->end(); block = block.next()) {
+    doc->markContentsDirty(0, doc->characterCount()); // force html reformatting
+     for (QTextBlock block = doc->begin(); block != doc->end(); block = block.next()) {
         for (auto it = block.begin(); !it.atEnd(); it++) {
             QTextFragment frag = it.fragment();
             if (frag.isValid()) {
@@ -87,6 +87,7 @@ void SyncHelper::syncToViewer() {
             }
         }
     }
+    m_viewer->update();
 }
 
 void SyncHelper::processImages() {
