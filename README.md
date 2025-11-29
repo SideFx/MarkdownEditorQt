@@ -17,5 +17,7 @@ MarkdownEditorQt is a Qt6-based application for editing and previewing Markdown 
 
 **2025-11-29:**
 - Fixed text alignment in viewer (no more occasional line breaks)
+- Code review
+
 
 

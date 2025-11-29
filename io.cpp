@@ -6,9 +6,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "io.h"
-#include "constants.h"
 #include <QDir>
-#include <QRegularExpression>
 
 QString Io::save(QString fileName, QByteArray payload) {
     QFile file(fileName);

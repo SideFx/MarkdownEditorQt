@@ -412,7 +412,10 @@ bool MainWindow::fileSave(bool saveAs) { //saveAs default false
         m_lastFolder = fileInfo.path();
         mc_synchelper->setDocumentPath(m_lastFolder);
         m_fileName = fileInfo.fileName();
-    } else fName = m_lastFolder + "/" + m_fileName;
+    } else {
+        QFileInfo fileInfo(m_lastFolder, m_fileName);
+        fName = fileInfo.absoluteFilePath();
+    }
     QByteArray ba = StringToByteArray(m_mdEditor->toPlainText());
     Io* io = new Io();
     QString result = io->save(fName, ba);
