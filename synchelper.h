@@ -21,6 +21,7 @@ public:
     void syncToViewer();
     void setDocumentPath(QString path) { m_documentPath = path; }
     void invalidateImageCache() { mc_handler->invalidateCache(); }
+    void refreshDocument();
 
 private:
     QTextEdit* m_editor;
@@ -29,9 +30,8 @@ private:
     QString m_documentPath;
     void processImages();
 
-    const QString c_marker_editor = QString::fromUtf8("\u200B@@SYNC@@\u200B");
-    const QString c_marker_viewer = "<a id=\"sync\" hidden>&nbsp;</a>";
-    const QString c_anchor = "sync";
+    const QString c_anchor = "<a name=\"sync\" hidden>&nbsp;</a>";
+    const QString c_anchor_name = "sync";
     const QString c_highlighting = "<span style=\"background-color:#FAE098\">\\1</span>";
 };
 

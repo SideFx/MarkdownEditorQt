@@ -86,6 +86,7 @@ void MainWindow::createToolBar() {
     m_mainToolBar->addSeparator();
     m_mainToolBar->addAction(ui->mainEditFormatBold);
     m_mainToolBar->addAction(ui->mainEditFormatItalic);
+    m_mainToolBar->addAction(ui->mainEditFormatStrikethrough);
     m_mainToolBar->addAction(ui->mainEditFormatCode);
     m_mainToolBar->addAction(ui->mainEditFormatHighlight);
     QWidget* spacerSmall = new QWidget;
@@ -155,6 +156,7 @@ void MainWindow::populateMainMenu() {
     ui->menuEdit->addSeparator();
     ui->menuEdit->addAction(ui->mainEditFormatBold);
     ui->menuEdit->addAction(ui->mainEditFormatItalic);
+    ui->menuEdit->addAction(ui->mainEditFormatStrikethrough);
     ui->menuEdit->addAction(ui->mainEditFormatCode);
     ui->menuEdit->addAction(ui->mainEditFormatHighlight);
     ui->menuOptions->addAction(ui->mainOptionsSync);
@@ -174,6 +176,7 @@ void MainWindow::setConnections() {
     connect(ui->mainEditRedo, &QAction::triggered, this, &MainWindow::onEditRedo);
     connect(ui->mainEditFormatBold, &QAction::triggered, this, &MainWindow::onEditFormat);
     connect(ui->mainEditFormatItalic, &QAction::triggered, this, &MainWindow::onEditFormat);
+    connect(ui->mainEditFormatStrikethrough, &QAction::triggered, this, &MainWindow::onEditFormat);
     connect(ui->mainEditFormatCode, &QAction::triggered, this, &MainWindow::onEditFormat);
     connect(ui->mainEditFormatHighlight, &QAction::triggered, this, &MainWindow::onEditFormat);
     connect(ui->mainOptionsSync, &QAction::toggled, this, &MainWindow::onOptionsSync);
@@ -328,6 +331,8 @@ void MainWindow::onEditFormat() {
             format = "**";
         } else if (action == ui->mainEditFormatItalic) {
             format = "*";
+        } else if (action == ui->mainEditFormatStrikethrough) {
+            format = "~";
         } else if (action == ui->mainEditFormatCode) {
             format = "`";
         } else if (action == ui->mainEditFormatHighlight) {
@@ -421,6 +426,7 @@ bool MainWindow::fileSave(bool saveAs) { //saveAs default false
     QString result = io->save(fName, ba);
     delete io;
     if (result.isEmpty()) {
+        mc_synchelper->refreshDocument();
         QString title = QString(APPNAME) + " - " + m_fileName + PLACEHOLDER;
         setWindowTitle(title);
         setWindowModified(false);

@@ -31,6 +31,6 @@ private:
     QString const MSG_WANTSAVE = QObject::tr("Should the changes be saved before closing?\n"
                                              "If you don't save, the changes will be lost.");
     QString const FILE_FILTER = QObject::tr("Markdown files (*.md)");
-
+    QString const DEFAULT_SUFFIX = ".md";
 };
 

@@ -364,6 +364,24 @@
     <enum>QAction::MenuRole::NoRole</enum>
    </property>
   </action>
+  <action name="mainEditFormatStrikethrough">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/tb/assets/mainTB_FormatStrikethrough.svg</normaloff>:/tb/assets/mainTB_FormatStrikethrough.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Format Strikethrough</string>
+   </property>
+   <property name="toolTip">
+    <string>Format selection Strikethrough</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="resources.qrc"/>

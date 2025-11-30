@@ -50,6 +50,7 @@ QString Dialogs::showSaveFileDialog(QString folder, QString fileName) {
     saveDialog.setAcceptMode(QFileDialog::AcceptSave);
     saveDialog.setFileMode(QFileDialog::AnyFile);
     saveDialog.setNameFilter(FILE_FILTER);
+    saveDialog.setDefaultSuffix(DEFAULT_SUFFIX);
     saveDialog.setOption(QFileDialog::DontUseNativeDialog, true);
     saveDialog.setViewMode(QFileDialog::Detail);
     saveDialog.selectFile(fileName);

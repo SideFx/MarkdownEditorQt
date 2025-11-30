@@ -30,9 +30,9 @@ void SyncHelper::syncToViewer() {
     QTextBlock eBlock = eCursor.block();
     if (eBlock.isValid()) {
         eCursor.movePosition(QTextCursor::EndOfBlock);
-        eCursor.insertText(c_marker_editor);
+        eCursor.insertText(c_anchor);
         // old position + marker length
-        eCursor.setPosition(oldPos + c_marker_editor.length());
+        eCursor.setPosition(oldPos + c_anchor.length());
         m_editor->setTextCursor(eCursor);
     }
     m_editor->blockSignals(false);
@@ -40,8 +40,6 @@ void SyncHelper::syncToViewer() {
     // emulate highlighting
     QRegularExpression re("==([^\\s].*?[^\\s])==");
     markdown.replace(re, c_highlighting);
-    // replace marker
-    markdown.replace(c_marker_editor, c_marker_viewer);
     QByteArray ba = markdown.toUtf8();
     std::string html;
     // convert to html using md4c-html
@@ -50,12 +48,12 @@ void SyncHelper::syncToViewer() {
             auto* out = static_cast<std::string*>(userdata);
             out->append(text, size);
         },
-        &html, 0, 0);
+        &html, MD_FLAG_TABLES | MD_FLAG_STRIKETHROUGH, 0);
     QString content = QString::fromUtf8( html.data(), html.size());
     m_viewer->setHtml(content);
     // remove marker in editor
     m_editor->blockSignals(true);
-    QTextCursor eFound = m_editor->document()->find(c_marker_editor);
+    QTextCursor eFound = m_editor->document()->find(c_anchor);
     if (!eFound.isNull()) {
         eFound.removeSelectedText(); // delete marker
     }
@@ -75,7 +73,7 @@ void SyncHelper::syncToViewer() {
                     QTextCharFormat ch = frag.charFormat().toCharFormat();
                     QStringList list = ch.anchorNames();
                     for (const auto &name : list) {
-                        if (name == c_anchor) {
+                        if (name == c_anchor_name) {
                             QTextCursor cursor(block);
                             cursor.movePosition(QTextCursor::EndOfBlock);
                             m_viewer->setTextCursor(cursor);
@@ -124,4 +122,9 @@ void SyncHelper::processImages() {
         block = block.next();
     }
     m_viewer->blockSignals(false);
+}
+
+void SyncHelper::refreshDocument() {
+    mc_handler->invalidateCache();
+    syncToViewer();
 }
