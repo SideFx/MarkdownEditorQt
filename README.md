@@ -26,4 +26,7 @@ MarkdownEditorQt is a Qt6-based application for editing and previewing Markdown 
 - Enabled **strikethrough** and **tables** in md4c
 - Hacked md4c-html.c: Replaced &lt;del&gt; tags with &lt;s&gt; tags, so that QTextBrowser finally understands ~strikethrough~.
 
+**2025-12-02:**
+- Fixed dirty flag
+
 

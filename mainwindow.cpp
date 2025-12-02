@@ -374,6 +374,7 @@ void MainWindow::fileNew() {
     QString title = QString(APPNAME) + " - " + mc_dialogs->UNTITLED_DOCUMENT + PLACEHOLDER;
     setWindowTitle(title);
     setWindowModified(false);
+    m_dirty = true;
     m_mdEditor->setFocus();
 }
 
