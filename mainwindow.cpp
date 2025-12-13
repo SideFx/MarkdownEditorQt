@@ -68,8 +68,7 @@ void MainWindow::createToolBar() {
 #if defined(Q_OS_WIN)
     m_mainToolBar->setStyleSheet(styleToolBar);
 #elif defined(Q_OS_MAC)
-    mainToolBar->setStyleSheet(styleToolButton);
-    mainListToolBar->setStyleSheet(styleToolButton);
+    m_mainToolBar->setStyleSheet(styleToolButton);
 #endif
     this->addToolBar(Qt::TopToolBarArea, m_mainToolBar);
     m_mainToolBar->addAction(ui->mainNewFile);
@@ -134,7 +133,7 @@ void MainWindow::createStatusBar() {
     m_statusBar = new QStatusBar;
     this->setStatusBar(m_statusBar);
 #if defined(Q_OS_MAC)
-    statusBar->setVisible(false);
+    m_statusBar->setVisible(false);
 #endif
 }
 

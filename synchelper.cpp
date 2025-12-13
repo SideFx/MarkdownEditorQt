@@ -9,7 +9,7 @@
 #include <QTextBlock>
 #include <QScrollBar>
 #include <QRegularExpression>
-#include "md4c-html.h"
+#include "md4c/src/md4c-html.h"
 
 SyncHelper::SyncHelper(QTextEdit* editor, QTextBrowser* viewer)
     : m_editor(editor), m_viewer(viewer) {
