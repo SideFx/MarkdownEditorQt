@@ -32,3 +32,6 @@ MarkdownEditorQt is a Qt6-based application for editing and previewing Markdown 
 **2025-12-13:**
 - Fixed macOS issues
 
+**2026-04-05:**
+- Fixed YesNoCancel dialog
+
