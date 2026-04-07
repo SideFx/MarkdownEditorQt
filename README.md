@@ -6,14 +6,10 @@ MarkdownEditorQt is a Qt6-based application for editing and previewing Markdown 
 - Fully aligned with the CommonMark standard, with highlighting emulated via HTML tags
 - Includes a live preview feature (see screenshot below)
 
-
 ![Screenshot](images/img01.png)
-
-
 
 #### Credits
 [Special thanks to Martin Mitáš (mity) and all contributors to the md4c library.](https://github.com/mity/md4c)
-
 
 #### Updates
 
@@ -34,4 +30,8 @@ MarkdownEditorQt is a Qt6-based application for editing and previewing Markdown 
 
 **2026-04-05:**
 - Fixed YesNoCancel dialog
+
+**2026-04-07:**
+- Added MD_FLAG_HARD_SOFT_BREAK to md4c flags
+- Made highlighting more tolerant
 
