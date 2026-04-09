@@ -37,3 +37,4 @@ MarkdownEditorQt is a Qt6-based application for editing and previewing Markdown 
 
 **2026-04-09:**
 - Added splitter handle stylesheet to reduce the handle width (macOS)
+- Complete redesign of logic to keep editor and viewer in sync
