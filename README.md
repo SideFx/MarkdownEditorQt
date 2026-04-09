@@ -35,3 +35,5 @@ MarkdownEditorQt is a Qt6-based application for editing and previewing Markdown 
 - Added MD_FLAG_HARD_SOFT_BREAK to md4c flags
 - Made highlighting more tolerant
 
+**2026-04-09:**
+- Added splitter handle stylesheet to reduce the handle width (macOS)

@@ -127,6 +127,9 @@ void MainWindow::createSplitter() {
     m_mainSplitter->addWidget(m_mdEditor);
     m_mainSplitter->addWidget(m_mdViewer);
     m_mainSplitter->setSizes({1, 1});
+#if defined(Q_OS_MAC)
+    m_mainSplitter->setStyleSheet(styleSplitterHandle);
+#endif
 }
 
 void MainWindow::createStatusBar() {
