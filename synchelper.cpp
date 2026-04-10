@@ -3,7 +3,7 @@
 // Purpose:     Keep MD viewer in sync with MD editor
 // Author:      Jan Buchholz
 // Created:     2025-11-26
-// Changed:     2026-04-09
+// Changed:     2026-04-10
 /////////////////////////////////////////////////////////////////////////////
 
 #include "synchelper.h"
@@ -50,8 +50,10 @@ void SyncHelper::syncToViewer() {
     QTextDocument* doc = m_viewer->document();
     doc->markContentsDirty(0, doc->characterCount());
     // scroll viewer to document position determined by ratio
-    auto* sb = m_viewer->verticalScrollBar();
-    sb->setValue(int(ratio * sb->maximum()));
+    QTimer::singleShot(0, this, [this, ratio]() {
+        auto* sb = m_viewer->verticalScrollBar();
+        sb->setValue(int(ratio * sb->maximum()));
+    });
 }
 
 void SyncHelper::processImages() {

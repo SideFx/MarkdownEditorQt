@@ -283,10 +283,10 @@
      <normaloff>:/tb/assets/mainTB_Sync.svg</normaloff>:/tb/assets/mainTB_Sync.svg</iconset>
    </property>
    <property name="text">
-    <string>Sync. scrolling</string>
+    <string>Synchronize scrolling</string>
    </property>
    <property name="toolTip">
-    <string>Sync. scrolling of editor and viewer</string>
+    <string>Synchronize scrolling of editor and viewer</string>
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::NoRole</enum>

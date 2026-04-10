@@ -3,6 +3,7 @@
 // Purpose:     The main window
 // Author:      Jan Buchholz
 // Created:     2025-11-23
+// Changed:     2026-04-10
 /////////////////////////////////////////////////////////////////////////////
 
 #include "mainwindow.h"
@@ -88,6 +89,8 @@ void MainWindow::createToolBar() {
     m_mainToolBar->addAction(ui->mainEditFormatStrikethrough);
     m_mainToolBar->addAction(ui->mainEditFormatCode);
     m_mainToolBar->addAction(ui->mainEditFormatHighlight);
+    m_mainToolBar->addSeparator();
+    m_mainToolBar->addAction(ui->mainOptionsSync);
     QWidget* spacerSmall = new QWidget;
     spacerSmall->setMinimumWidth(25);
     m_mainToolBar->addWidget(spacerSmall);
@@ -440,10 +443,11 @@ bool MainWindow::fileSave(bool saveAs) { //saveAs default false
 
 void MainWindow::setSync(bool enabled) {
     m_sync = enabled;
-    mc_synchronizer->setEnabled(m_sync);
+    mc_synchronizer->setEnabled(enabled);
+    ui->mainOptionsSync->setChecked(enabled);
     if (enabled) {
-        ui->mainOptionsSync->setText(tr("Disable scrolling synchronization"));
+        ui->mainOptionsSync->setText(tr("Disable scroll synchronization"));
     } else {
-        ui->mainOptionsSync->setText(tr("Enable scrolling synchronization"));
+        ui->mainOptionsSync->setText(tr("Enable scroll synchronization"));
     }
 }
