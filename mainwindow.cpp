@@ -3,7 +3,7 @@
 // Purpose:     The main window
 // Author:      Jan Buchholz
 // Created:     2025-11-23
-// Changed:     2026-04-10
+// Changed:     2026-04-21
 /////////////////////////////////////////////////////////////////////////////
 
 #include "mainwindow.h"
@@ -35,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     setUnifiedTitleAndToolBarOnMac(true);
     mc_synchronizer = new ScrollSynchronizer(m_mdEditor, m_mdViewer, m_mainSplitter);
     mc_synchelper = new SyncHelper(m_mdEditor, m_mdViewer);
+    m_sync = true;
     loadPreferences();
     setSync(m_sync);
     m_timer = new QTimer;
