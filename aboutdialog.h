@@ -3,7 +3,7 @@
 // Purpose:     About dialog header
 // Author:      Jan Buchholz
 // Created:     2025-11-23
-// Changed:     2026-04-09
+// Changed:     2026-05-21
 /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
@@ -25,7 +25,7 @@ public:
 
 private:
     Ui::AboutDialog *ui;
-    QString TxtAbout = "MarkdownEditorQt " + APPVERSION + " (w) 2026 Jan Buchholz\n***\n" +
+    QString TxtAbout = "MarkdownEditorQt " + APPVERSION + "\n(w) 2026 Jan Buchholz\n***\n" +
     tr("Created with Qt Community Edition v") + qVersion() + tr(" (https://www.qt.io).") +
     tr("\n***\nThanks to Martin Mitáš (mity)\n") +
     tr("and all contributors to the \"md4c\" library:\nhttps://github.com/mity/md4c");
