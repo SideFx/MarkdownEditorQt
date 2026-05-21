@@ -42,12 +42,14 @@ private:
     QSplitter *m_mainSplitter;
     QFontComboBox *m_fontComboBox;
     QComboBox *m_fontSizeBox;
-    ScrollSynchronizer *mc_synchronizer;
+
     QString m_lastFolder;
     QString m_fileName;
     QTimer *m_timer;
-    Dialogs *mc_dialogs;
+    Dialogs mc_dialogs;
+    ScrollSynchronizer *mc_synchronizer;
     SyncHelper *mc_synchelper;
+
     bool m_sync;
     bool m_dirty;
     const QStringList fontSizeList = {"8", "9", "10", "11", "12", "13", "14", "16", "18"};

@@ -3,7 +3,7 @@
 // Purpose:     Keep MD viewer in sync with MD editor (header)
 // Author:      Jan Buchholz
 // Created:     2025-11-26
-// Changed:     2026-04-09
+// Changed:     2026-05-21
 /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
@@ -17,17 +17,16 @@ class SyncHelper : public QObject {
     Q_OBJECT
 
 public:
-    SyncHelper(QTextEdit* editor, QTextBrowser* viewer);
-    ~SyncHelper();
+    SyncHelper(QTextEdit* editor, QTextBrowser* viewer, QWidget* parent);
     void syncToViewer();
     void setDocumentPath(QString path) { m_documentPath = path; }
-    void invalidateImageCache() { mc_handler->invalidateCache(); }
+    void invalidateImageCache() { mc_handler.invalidateCache(); }
     void refreshDocument();
 
 private:
     QTextEdit* m_editor;
     QTextBrowser* m_viewer;
-    ImageHandler* mc_handler;
+    ImageHandler mc_handler;
     QString m_documentPath;
     void processImages();
 

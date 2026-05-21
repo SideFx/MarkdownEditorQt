@@ -3,7 +3,7 @@
 // Purpose:     The main window
 // Author:      Jan Buchholz
 // Created:     2025-11-23
-// Changed:     2026-04-21
+// Changed:     2026-05-21
 /////////////////////////////////////////////////////////////////////////////
 
 #include "mainwindow.h"
@@ -18,11 +18,13 @@
 #include "io.h"
 #include "conversions.hpp"
 #include <QDir>
+#include <QScrollBar>
 #include "fixedsplitter.hpp"
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
+                                          ui(new Ui::MainWindow),
+                                          mc_dialogs(this) {
     ui->setupUi(this);
-    mc_dialogs = new Dialogs(this);
     ui->mainAppInfo->setToolTip(tr("About") + " " + APPNAME);
     ui->mainAppInfo->setText(tr("About") + " " + APPNAME);
     createToolBar();
@@ -33,8 +35,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     populateMainMenu();
     setCentralWidget(m_mainSplitter);
     setUnifiedTitleAndToolBarOnMac(true);
-    mc_synchronizer = new ScrollSynchronizer(m_mdEditor, m_mdViewer, m_mainSplitter);
-    mc_synchelper = new SyncHelper(m_mdEditor, m_mdViewer);
+    mc_synchronizer = new ScrollSynchronizer(m_mdEditor, m_mdViewer, m_mainSplitter, this);
+    mc_synchelper = new SyncHelper(m_mdEditor, m_mdViewer, this);
     m_sync = true;
     loadPreferences();
     setSync(m_sync);
@@ -47,20 +49,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 MainWindow::~MainWindow() {
     delete ui;
-    delete m_fontComboBox;
-    delete m_fontSizeBox;
-    delete m_mainToolBar;
-    delete m_statusBar;
-    delete m_mdViewer;
-    delete m_mdEditor;
-    delete m_timer;
-    delete m_mainSplitter;
-    delete mc_dialogs;
-    delete mc_synchelper;
 }
 
 void MainWindow::createToolBar() {
-    m_mainToolBar = new QToolBar;
+    m_mainToolBar = new QToolBar(this);
     m_mainToolBar->setObjectName("mainToolbar");
     m_mainToolBar->setMovable(false);
     m_mainToolBar->setOrientation(Qt::Horizontal);
@@ -95,11 +87,11 @@ void MainWindow::createToolBar() {
     QWidget* spacerSmall = new QWidget;
     spacerSmall->setMinimumWidth(25);
     m_mainToolBar->addWidget(spacerSmall);
-    m_fontComboBox = new QFontComboBox;
+    m_fontComboBox = new QFontComboBox(this);
     m_fontComboBox->setFontFilters(QFontComboBox::ScalableFonts);
     m_fontComboBox->setWritingSystem(QFontDatabase::Latin);
     m_mainToolBar->addWidget(m_fontComboBox);
-    m_fontSizeBox = new QComboBox;
+    m_fontSizeBox = new QComboBox(this);
     m_fontSizeBox->addItems(fontSizeList);
     m_mainToolBar->addWidget(m_fontSizeBox);
     QWidget* spacerLarge = new QWidget;
@@ -110,7 +102,7 @@ void MainWindow::createToolBar() {
 }
 
 void MainWindow::createMdViewer() {
-    m_mdViewer = new QTextBrowser;
+    m_mdViewer = new QTextBrowser(this);
     m_mdViewer->setWordWrapMode(QTextOption::WordWrap);
     m_mdViewer->setLineWrapMode(QTextEdit::WidgetWidth);
     m_mdViewer->setAcceptRichText(false);
@@ -118,7 +110,7 @@ void MainWindow::createMdViewer() {
 }
 
 void MainWindow::createMdEditor() {
-    m_mdEditor = new QTextEdit;
+    m_mdEditor = new QTextEdit(this);
     m_mdEditor->setAcceptRichText(false);
     m_mdEditor->setWordWrapMode(QTextOption::WordWrap);
     m_mdEditor->setLineWrapMode(QTextEdit::WidgetWidth);
@@ -137,7 +129,7 @@ void MainWindow::createSplitter() {
 }
 
 void MainWindow::createStatusBar() {
-    m_statusBar = new QStatusBar;
+    m_statusBar = new QStatusBar(this);
     this->setStatusBar(m_statusBar);
 #if defined(Q_OS_MAC)
     m_statusBar->setVisible(false);
@@ -225,12 +217,13 @@ void MainWindow::loadPreferences() {
         catch (...) {}
     }
     delete prefs;
-    if (m_lastFolder.isEmpty()) m_lastFolder = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+    if (m_lastFolder.isEmpty())
+        m_lastFolder = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
 }
 
 void MainWindow::closeEvent(QCloseEvent *e) {
     if (isWindowModified()) {
-        int answer = mc_dialogs->showDialogUnsavedChanges();
+        int answer = mc_dialogs.showDialogUnsavedChanges();
         if (answer == QMessageBox::Cancel) {
             e->ignore();
             return;
@@ -280,7 +273,7 @@ void MainWindow::onOptionsSync(bool checked) {
 
 void MainWindow::onNewFile() {
     if (isWindowModified()) {
-        int answer = mc_dialogs->showDialogUnsavedChanges();
+        int answer = mc_dialogs.showDialogUnsavedChanges();
         if(answer == QMessageBox::Cancel) return;
         if(answer == QMessageBox::Yes) {
             if (!fileSave()) return;
@@ -377,7 +370,7 @@ void MainWindow::fileNew() {
     m_mdViewer->clear();
     m_mdEditor->blockSignals(false);
     mc_synchelper->invalidateImageCache();
-    QString title = QString(APPNAME) + " - " + mc_dialogs->UNTITLED_DOCUMENT + PLACEHOLDER;
+    QString title = QString(APPNAME) + " - " + mc_dialogs.UNTITLED_DOCUMENT + PLACEHOLDER;
     setWindowTitle(title);
     setWindowModified(false);
     m_dirty = true;
@@ -386,21 +379,20 @@ void MainWindow::fileNew() {
 
 bool MainWindow::fileOpen() {
     if (isWindowModified()) {
-        int answer = mc_dialogs->showDialogUnsavedChanges();
+        int answer = mc_dialogs.showDialogUnsavedChanges();
         if (answer == QMessageBox::Cancel) return true;
         if (answer == QMessageBox::Ok) {
             return fileSave();
         }
     }
-    QString fName = mc_dialogs->showOpenFileDialog(m_lastFolder);
+    QString fName = mc_dialogs.showOpenFileDialog(m_lastFolder);
     if (!fName.isEmpty()) {
         QFileInfo fileInfo(fName);
         m_lastFolder = fileInfo.path();
         m_fileName = fileInfo.fileName();
         QByteArray ba;
-        Io* io = new Io();
-        QString result = io->load(fName, &ba);
-        delete io;
+        Io io;
+        QString result = io.load(fName, &ba);
         if (result.isEmpty()) {
             mc_synchelper->invalidateImageCache();
             mc_synchelper->setDocumentPath(m_lastFolder);
@@ -410,7 +402,7 @@ bool MainWindow::fileOpen() {
             setWindowTitle(title);
             setWindowModified(false);
             return true;
-        } else mc_dialogs->showDialogDisplayError(result);
+        } else mc_dialogs.showDialogDisplayError(result);
     }
     return false;
 }
@@ -418,7 +410,7 @@ bool MainWindow::fileOpen() {
 bool MainWindow::fileSave(bool saveAs) { //saveAs default false
     QString fName;
     if (m_lastFolder.isEmpty() || m_fileName.isEmpty() || saveAs) {
-        fName = mc_dialogs->showSaveFileDialog(m_lastFolder, m_fileName);
+        fName = mc_dialogs.showSaveFileDialog(m_lastFolder, m_fileName);
         if (fName.isEmpty()) return false;
         QFileInfo fileInfo(fName);
         m_lastFolder = fileInfo.path();
@@ -429,16 +421,21 @@ bool MainWindow::fileSave(bool saveAs) { //saveAs default false
         fName = fileInfo.absoluteFilePath();
     }
     QByteArray ba = StringToByteArray(m_mdEditor->toPlainText());
-    Io* io = new Io();
-    QString result = io->save(fName, ba);
-    delete io;
+    Io io;
+    QString result = io.save(fName, ba);
     if (result.isEmpty()) {
         mc_synchelper->refreshDocument();
+        m_mdEditor->moveCursor(QTextCursor::Start);
+        m_mdEditor->verticalScrollBar()->setValue(0);
         QString title = QString(APPNAME) + " - " + m_fileName + PLACEHOLDER;
         setWindowTitle(title);
         setWindowModified(false);
+        QTimer::singleShot(0, m_mdViewer, [this] {
+            m_mdViewer->moveCursor(QTextCursor::Start);
+            m_mdViewer->verticalScrollBar()->setValue(0);
+        });
         return true;
-    } else mc_dialogs->showDialogDisplayError(result);
+    } else mc_dialogs.showDialogDisplayError(result);
     return false;
 }
 

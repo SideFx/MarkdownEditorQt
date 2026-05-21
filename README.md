@@ -41,3 +41,8 @@ MarkdownEditorQt is a Qt6-based application for editing and previewing Markdown 
 
 **2026-04-10:**
 - Added toolbar button to toggle scroll synchronization
+
+**2026-05-21:**
+- Fixed scroll sync setting on app's first start
+- Scroll document to top after save (both editor and viewer)
+- Refactor: Fix QObject initialization order and apply proper parent ownership

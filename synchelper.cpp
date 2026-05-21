@@ -3,7 +3,7 @@
 // Purpose:     Keep MD viewer in sync with MD editor
 // Author:      Jan Buchholz
 // Created:     2025-11-26
-// Changed:     2026-04-10
+// Changed:     2026-05-21
 /////////////////////////////////////////////////////////////////////////////
 
 #include "synchelper.h"
@@ -13,14 +13,13 @@
 #include <QRegularExpression>
 #include "md4c/src/md4c-html.h"
 
-SyncHelper::SyncHelper(QTextEdit* editor, QTextBrowser* viewer)
-    : m_editor(editor), m_viewer(viewer) {
-    mc_handler = new ImageHandler;
+SyncHelper::SyncHelper(QTextEdit* editor,
+                       QTextBrowser* viewer,
+                       QWidget* parent) :
+                       QObject(parent),
+                       m_editor(editor),
+                       m_viewer(viewer) {
     m_documentPath.clear();
-}
-
-SyncHelper::~SyncHelper() {
-    delete mc_handler;
 }
 
 void SyncHelper::syncToViewer() {
@@ -68,7 +67,7 @@ void SyncHelper::processImages() {
             QTextFragment frag = it.fragment();
             if (frag.isValid() && frag.charFormat().isImageFormat()) {
                 QTextImageFormat imgFmt = frag.charFormat().toImageFormat();
-                QImage image = mc_handler->getFromCache(imgFmt.name(), m_documentPath);
+                QImage image = mc_handler.getFromCache(imgFmt.name(), m_documentPath);
                 if (!image.isNull()) {
                     QSize size = image.size();
                     doc->addResource(QTextDocument::ImageResource, QUrl(imgFmt.name()), image);
@@ -93,6 +92,6 @@ void SyncHelper::processImages() {
 }
 
 void SyncHelper::refreshDocument() {
-    mc_handler->invalidateCache();
+    mc_handler.invalidateCache();
     syncToViewer();
 }
