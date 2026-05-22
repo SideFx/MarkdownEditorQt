@@ -3,6 +3,7 @@
 // Purpose:     The main window (header)
 // Author:      Jan Buchholz
 // Created:     2025-11-23
+// Changed:     2026-05-21
 /////////////////////////////////////////////////////////////////////////////
 
 #pragma once

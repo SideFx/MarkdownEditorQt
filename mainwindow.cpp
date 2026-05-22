@@ -3,7 +3,7 @@
 // Purpose:     The main window
 // Author:      Jan Buchholz
 // Created:     2025-11-23
-// Changed:     2026-05-21
+// Changed:     2026-05-22
 /////////////////////////////////////////////////////////////////////////////
 
 #include "mainwindow.h"
@@ -84,7 +84,7 @@ void MainWindow::createToolBar() {
     m_mainToolBar->addAction(ui->mainEditFormatHighlight);
     m_mainToolBar->addSeparator();
     m_mainToolBar->addAction(ui->mainOptionsSync);
-    QWidget* spacerSmall = new QWidget;
+    QWidget* spacerSmall = new QWidget(this);
     spacerSmall->setMinimumWidth(25);
     m_mainToolBar->addWidget(spacerSmall);
     m_fontComboBox = new QFontComboBox(this);
@@ -94,7 +94,7 @@ void MainWindow::createToolBar() {
     m_fontSizeBox = new QComboBox(this);
     m_fontSizeBox->addItems(fontSizeList);
     m_mainToolBar->addWidget(m_fontSizeBox);
-    QWidget* spacerLarge = new QWidget;
+    QWidget* spacerLarge = new QWidget(this);
     spacerLarge->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_mainToolBar->addWidget(spacerLarge);
     m_mainToolBar->addAction(ui->mainAppInfo);
@@ -246,7 +246,7 @@ void MainWindow::onTextChanged() {
     if (!m_dirty) m_dirty = true;
 }
 
-// font combobox
+// ---font combobox---
 void MainWindow::onCurrentFontChanged(const QFont font) {
     QFont f = font;
     if (!f.family().isEmpty()) {
@@ -257,7 +257,7 @@ void MainWindow::onCurrentFontChanged(const QFont font) {
     }
 }
 
-// font size combobox
+// ---font size combobox---
 void MainWindow::onCurrentTextChanged(const QString size) {
     int s = size.toInt();
     QFont font = m_mdViewer->font();
@@ -266,7 +266,7 @@ void MainWindow::onCurrentTextChanged(const QString size) {
     m_mdEditor->setFont(font);
 }
 
-// enable/disable scroll sync.
+// ---enable/disable scroll sync.---
 void MainWindow::onOptionsSync(bool checked) {
     setSync(checked);
 }
