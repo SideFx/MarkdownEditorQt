@@ -3,7 +3,7 @@
 // Purpose:     Keep MD viewer in sync with MD editor
 // Author:      Jan Buchholz
 // Created:     2025-11-26
-// Changed:     2026-05-21
+// Changed:     2026-05-22
 /////////////////////////////////////////////////////////////////////////////
 
 #include "synchelper.h"
@@ -15,7 +15,7 @@
 
 SyncHelper::SyncHelper(QTextEdit* editor,
                        QTextBrowser* viewer,
-                       QWidget* parent) :
+                       QMainWindow* parent) :
                        QObject(parent),
                        m_editor(editor),
                        m_viewer(viewer) {

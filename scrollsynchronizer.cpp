@@ -3,7 +3,7 @@
 // Purpose:     Synchronize scrolling of MD editor with MD viewer
 // Author:      Jan Buchholz
 // Created:     2025-11-20
-// Changed:     2026-05-21
+// Changed:     2026-05-22
 /////////////////////////////////////////////////////////////////////////////
 
 #include "scrollsynchronizer.h"
@@ -11,12 +11,10 @@
 
 ScrollSynchronizer::ScrollSynchronizer(QTextEdit* editor,
                                        QTextBrowser* browser,
-                                       QSplitter* parentSplitter,
                                        QWidget* parent) :
                                        QObject(parent),
                                        m_editor(editor),
                                        m_viewer(browser),
-                                       m_splitter(parentSplitter),
                                        m_syncing(false) {
     connect(m_editor->verticalScrollBar(), &QScrollBar::valueChanged,
             this, &ScrollSynchronizer::sync);

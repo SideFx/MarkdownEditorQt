@@ -35,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     populateMainMenu();
     setCentralWidget(m_mainSplitter);
     setUnifiedTitleAndToolBarOnMac(true);
-    mc_synchronizer = new ScrollSynchronizer(m_mdEditor, m_mdViewer, m_mainSplitter, this);
+    mc_synchronizer = new ScrollSynchronizer(m_mdEditor, m_mdViewer, this);
     mc_synchelper = new SyncHelper(m_mdEditor, m_mdViewer, this);
     m_sync = true;
     loadPreferences();
@@ -187,25 +187,24 @@ void MainWindow::setConnections() {
 }
 
 void MainWindow::savePreferences() {
-    JBPreferences *prefs = new JBPreferences();
-    prefs->PushArray(SET_WGEOMETRY, saveGeometry());
-    prefs->PushArray(SET_WSTATE, saveState(0));
-    prefs->PushBoolean(SET_SYNC, m_sync);
-    prefs->PushString(SET_LASTFOLDER, m_lastFolder);
-    prefs->PushFont(SET_EDITORFONT, m_mdViewer->font());
-    prefs->SavePreferencesToDefaultLocation(SET_COMPANY, APPNAME);
-    delete prefs;
+    JBPreferences prefs;
+    prefs.PushArray(SET_WGEOMETRY, saveGeometry());
+    prefs.PushArray(SET_WSTATE, saveState(0));
+    prefs.PushBoolean(SET_SYNC, m_sync);
+    prefs.PushString(SET_LASTFOLDER, m_lastFolder);
+    prefs.PushFont(SET_EDITORFONT, m_mdViewer->font());
+    prefs.SavePreferencesToDefaultLocation(SET_COMPANY, APPNAME);
 }
 
 void MainWindow::loadPreferences() {
-    JBPreferences *prefs = new JBPreferences();
-    if (prefs->LoadPreferencesFromDefaultLocation(SET_COMPANY, APPNAME)) {
+    JBPreferences prefs;
+    if (prefs.LoadPreferencesFromDefaultLocation(SET_COMPANY, APPNAME)) {
         try {
-            restoreGeometry(prefs->PopArray(SET_WGEOMETRY));
-            restoreState(prefs->PopArray(SET_WSTATE));
-            m_sync = prefs->PopBoolean(SET_SYNC);
-            m_lastFolder = prefs->PopString(SET_LASTFOLDER);
-            QFont efont = prefs->PopFont(SET_EDITORFONT);
+            restoreGeometry(prefs.PopArray(SET_WGEOMETRY));
+            restoreState(prefs.PopArray(SET_WSTATE));
+            m_sync = prefs.PopBoolean(SET_SYNC);
+            m_lastFolder = prefs.PopString(SET_LASTFOLDER);
+            QFont efont = prefs.PopFont(SET_EDITORFONT);
             if (!efont.family().isEmpty()) {
                 m_fontComboBox->setCurrentFont(efont);
                 QString esize = QString::number(efont.pointSize());
@@ -216,7 +215,6 @@ void MainWindow::loadPreferences() {
         }
         catch (...) {}
     }
-    delete prefs;
     if (m_lastFolder.isEmpty())
         m_lastFolder = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
 }

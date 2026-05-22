@@ -3,7 +3,7 @@
 // Purpose:     Style sheets for QToolBar & QToolButton
 // Author:      Jan Buchholz
 // Created:     2025-10-13
-// Changed:     2026-04-09
+// Changed:     2026-05-22
 /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
