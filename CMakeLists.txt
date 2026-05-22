@@ -15,6 +15,7 @@ add_subdirectory("${CMAKE_SOURCE_DIR}/md4c")
 
 qt_add_executable(MarkdownEditorQt
     WIN32 MACOSX_BUNDLE
+    MANUAL_FINALIZATION
     main.cpp
     mainwindow.cpp
     mainwindow.h
@@ -77,4 +78,7 @@ if(APPLE)
     )
 endif()
 
+if(QT_VERSION_MAJOR EQUAL 6)
+    qt_finalize_executable(MarkdownEditorQt)
+endif()
 
