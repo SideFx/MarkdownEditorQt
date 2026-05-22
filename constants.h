@@ -3,7 +3,7 @@
 // Purpose:     Constants and text snippets
 // Author:      Jan Buchholz
 // Created:     2025-11-23
-// Changed:     2026-04-09
+// Changed:     2026-05-22
 /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
@@ -20,6 +20,6 @@
 #define SET_EDITORFONT "options/editorfont"
 #define PLACEHOLDER " [*]"
 
-inline const QString APPVERSION = "v2.0";
+inline const QString APPVERSION = "v2.1";
 
 int constexpr DEF_ICONSIZE = 16;
