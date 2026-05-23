@@ -47,4 +47,4 @@ MarkdownEditorQt is a Qt6-based application for editing and previewing Markdown 
 - Scroll document to top after save (both editor and viewer)
 
 **2026-05-22:**
-- Refactor: Qt-RAII
+- Refactor: Qt-RAII (parent-child relationship, using stack objects)

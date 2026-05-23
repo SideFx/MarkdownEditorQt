@@ -3,7 +3,7 @@
 // Purpose:     Synchronize scrolling of MD editor with MD viewer
 // Author:      Jan Buchholz
 // Created:     2025-11-20
-// Changed:     2026-05-22
+// Changed:     2026-05-23
 /////////////////////////////////////////////////////////////////////////////
 
 #include "scrollsynchronizer.h"
@@ -11,7 +11,7 @@
 
 ScrollSynchronizer::ScrollSynchronizer(QTextEdit* editor,
                                        QTextBrowser* browser,
-                                       QWidget* parent) :
+                                       QMainWindow* parent) :
                                        QObject(parent),
                                        m_editor(editor),
                                        m_viewer(browser),

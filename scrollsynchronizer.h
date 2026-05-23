@@ -3,7 +3,7 @@
 // Purpose:     Synchronize scrolling of MD editor with MD viewer (header)
 // Author:      Jan Buchholz
 // Created:     2025-11-20
-// Changed:     2026-05-22
+// Changed:     2026-05-23
 /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
@@ -11,6 +11,7 @@
 #include <QObject>
 #include <QSplitter>
 #include <QTextEdit>
+#include <QMainWindow>
 #include <QTextBrowser>
 
 class ScrollSynchronizer : public QObject {
@@ -19,7 +20,7 @@ class ScrollSynchronizer : public QObject {
 public:
     explicit ScrollSynchronizer(QTextEdit* editor,
                                 QTextBrowser* browser,
-                                QWidget* parent);
+                                QMainWindow* parent);
     void setEnabled(bool enabled);
 
 private:
