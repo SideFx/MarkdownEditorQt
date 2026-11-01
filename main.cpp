@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
 #if defined (Q_OS_WIN)
     a.setStyle(QStyleFactory::create("fusion"));
-#elif defined (Q_OS_MAC)
+#elif defined (Q_OS_APPLE)
     a.setStyle(QStyleFactory::create("macos"));
 #endif
     MainWindow w;

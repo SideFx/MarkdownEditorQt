@@ -61,7 +61,7 @@ void MainWindow::createToolBar() {
     m_mainToolBar->setFixedHeight(26);
 #if defined(Q_OS_WIN)
     m_mainToolBar->setStyleSheet(styleToolBar);
-#elif defined(Q_OS_MAC)
+#elif defined(Q_OS_APPLE)
     m_mainToolBar->setStyleSheet(styleToolButton);
 #endif
     this->addToolBar(Qt::TopToolBarArea, m_mainToolBar);
@@ -123,7 +123,7 @@ void MainWindow::createSplitter() {
     m_mainSplitter->addWidget(m_mdEditor);
     m_mainSplitter->addWidget(m_mdViewer);
     m_mainSplitter->setSizes({1, 1});
-#if defined(Q_OS_MAC)
+#if defined(Q_OS_APPLE)
     m_mainSplitter->setStyleSheet(styleSplitterHandle);
 #endif
 }
@@ -131,7 +131,7 @@ void MainWindow::createSplitter() {
 void MainWindow::createStatusBar() {
     m_statusBar = new QStatusBar(this);
     this->setStatusBar(m_statusBar);
-#if defined(Q_OS_MAC)
+#if defined(Q_OS_APPLE)
     m_statusBar->setVisible(false);
 #endif
 }
