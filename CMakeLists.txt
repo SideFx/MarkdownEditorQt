@@ -82,7 +82,13 @@ if(APPLE)
             "</dict>\n"
             "</plist>\n"
     )
-    # 2. Sign using two different steps
+    # 2. Deploy
+    get_filename_component(QT_BIN_DIR "${Qt6_DIR}/../../../bin" ABSOLUTE)
+    find_program(MACDEPLOYQT macdeployqt6 HINTS "${QT_BIN_DIR}")
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${MACDEPLOYQT} "$<TARGET_BUNDLE_DIR:${PROJECT_NAME}>" -verbose=2
+    )
+    # 3. Sign using two different steps
     add_custom_command(TARGET MarkdownEditorQt POST_BUILD
             # Schritt A: Deep signing of frameworks/libraries (without entitlements)
             COMMAND codesign --force --deep --sign - --timestamp=none "$<TARGET_BUNDLE_DIR:MarkdownEditorQt>"
