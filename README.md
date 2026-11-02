@@ -1,4 +1,4 @@
-### MarkdownEditor (Qt) - (w) 2025 Jan Buchholz 
+### MarkdownEditor (Qt) - (w) 2026 Jan Buchholz 
 
 MarkdownEditorQt is a Qt6-based application for editing and previewing Markdown documents.
 - Built on the md4c and md4c-html libraries for fast and accurate HTML generation
@@ -48,3 +48,13 @@ MarkdownEditorQt is a Qt6-based application for editing and previewing Markdown 
 
 **2026-05-22:**
 - Refactor: Qt-RAII (parent-child relationship, using stack objects)
+
+**2026-11-02:**
+- macOS 27.2 & Qt6.12: Fixed an issue where Qt Creator no longer stopped at breakpoints
+- macOS: Switched from the official Qt installer to Homebrew
+- Added support for opening .md files via double-click (Windows and macOS; Linux untested)
+- Renamed OFF_MAX to OFF_MAXUINT in md4c.c to resolve a compiler warning
+- Preserved scroll position after saving
+- MSYS2: Added documentation on how to use the provided shell scripts
+
+

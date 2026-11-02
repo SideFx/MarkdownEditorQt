@@ -33,6 +33,8 @@ qt_add_executable(MarkdownEditorQt
     imagehandler.h imagehandler.cpp
     synchelper.h synchelper.cpp
     app.icns app.ico appicon.rc
+    Info.plist.in
+    markdownapplication.h markdownapplication.cpp
 )
 
 target_link_libraries(MarkdownEditorQt PRIVATE
@@ -54,6 +56,7 @@ endif()
 set_target_properties(MarkdownEditorQt PROPERTIES
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
+    MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/Info.plist.in
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
 )
@@ -68,13 +71,24 @@ install(TARGETS MarkdownEditorQt
 
 # ---- macOS Deployment ----
 if(APPLE)
-    get_filename_component(QT_BIN_DIR "${Qt6_DIR}/../../../bin" ABSOLUTE)
-    find_program(MACDEPLOYQT macdeployqt6 HINTS "${QT_BIN_DIR}")
-    add_custom_command(TARGET MarkdownEditorQt POST_BUILD
-        COMMAND ${MACDEPLOYQT} "$<TARGET_BUNDLE_DIR:MarkdownEditorQt>" -verbose=2
+    # 1. Create Debug-Entitlements file in the build folder
+    file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/debug_entitlements.plist
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+            "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://apple.com\">\n"
+            "<plist version=\"1.0\">\n"
+            "<dict>\n"
+            "    <key>com.apple.security.get-task-allow</key>\n"
+            "    <true/>\n"
+            "</dict>\n"
+            "</plist>\n"
     )
+    # 2. Sign using two different steps
     add_custom_command(TARGET MarkdownEditorQt POST_BUILD
-        COMMAND codesign --force --deep --sign - --timestamp=none "$<TARGET_BUNDLE_DIR:MarkdownEditorQt>"
+            # Schritt A: Deep signing of frameworks/libraries (without entitlements)
+            COMMAND codesign --force --deep --sign - --timestamp=none "$<TARGET_BUNDLE_DIR:MarkdownEditorQt>"
+            # Schritt B: Debug entitlements for main executable only
+            COMMAND codesign --force --sign - --timestamp=none --entitlements
+            ${CMAKE_CURRENT_BINARY_DIR}/debug_entitlements.plist "$<TARGET_FILE:MarkdownEditorQt>"
     )
 endif()
 

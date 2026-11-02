@@ -3,7 +3,7 @@
 // Purpose:     The main window (header)
 // Author:      Jan Buchholz
 // Created:     2025-11-23
-// Changed:     2026-05-21
+// Changed:     2026-11-01
 /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
@@ -33,6 +33,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void closeEvent(QCloseEvent *e);
+    void openFile(const QString &filePath);
 
 private:
     Ui::MainWindow *ui;
@@ -53,6 +54,7 @@ private:
 
     bool m_sync;
     bool m_dirty;
+    bool m_handleFileOpen;
     const QStringList fontSizeList = {"8", "9", "10", "11", "12", "13", "14", "16", "18"};
     void createMdViewer();
     void createMdEditor();
@@ -67,6 +69,7 @@ private:
     bool fileOpen();
     bool fileSave(bool saveAs = false);
     void setSync(bool enabled);
+    void bringToFront();
 
 private slots:
     void onNewFile();

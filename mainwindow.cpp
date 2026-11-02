@@ -3,7 +3,7 @@
 // Purpose:     The main window
 // Author:      Jan Buchholz
 // Created:     2025-11-23
-// Changed:     2026-05-22
+// Changed:     2026-11-02
 /////////////////////////////////////////////////////////////////////////////
 
 #include "mainwindow.h"
@@ -21,6 +21,10 @@
 #include <QScrollBar>
 #include "fixedsplitter.hpp"
 
+#ifdef Q_OS_WIN
+#include <windows.h>
+#endif
+
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
                                           ui(new Ui::MainWindow),
                                           mc_dialogs(this) {
@@ -35,9 +39,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     populateMainMenu();
     setCentralWidget(m_mainSplitter);
     setUnifiedTitleAndToolBarOnMac(true);
+    setAutoFillBackground(true);
     mc_synchronizer = new ScrollSynchronizer(m_mdEditor, m_mdViewer, this);
     mc_synchelper = new SyncHelper(m_mdEditor, m_mdViewer, this);
     m_sync = true;
+    m_handleFileOpen = false;
     loadPreferences();
     setSync(m_sync);
     m_timer = new QTimer;
@@ -217,6 +223,41 @@ void MainWindow::loadPreferences() {
     }
     if (m_lastFolder.isEmpty())
         m_lastFolder = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+}
+
+void MainWindow::openFile(const QString &filePath) {
+    bringToFront();
+    if (m_handleFileOpen) return;
+    m_handleFileOpen = true;
+    if (isWindowModified()) {
+        int answer = mc_dialogs.showDialogUnsavedChanges();
+        if (answer == QMessageBox::Cancel) {
+            m_handleFileOpen = false;
+            return;
+        }
+        if (answer == QMessageBox::Ok) {
+            if (!fileSave()) {
+                m_handleFileOpen = false;
+                return;
+            }
+        }
+    }
+    QFileInfo fileInfo(filePath);
+    m_lastFolder = fileInfo.path();
+    m_fileName = fileInfo.fileName();
+    QByteArray ba;
+    Io io;
+    QString result = io.load(filePath, &ba);
+    if (result.isEmpty()) {
+        mc_synchelper->invalidateImageCache();
+        mc_synchelper->setDocumentPath(m_lastFolder);
+        m_dirty = false;
+        m_mdEditor->setPlainText(ByteArrayToString(ba));
+        QString title = QString(APPNAME) + " - " + fileInfo.fileName() + PLACEHOLDER;
+        setWindowTitle(title);
+        setWindowModified(false);
+    }
+    m_handleFileOpen = false;
 }
 
 void MainWindow::closeEvent(QCloseEvent *e) {
@@ -423,15 +464,9 @@ bool MainWindow::fileSave(bool saveAs) { //saveAs default false
     QString result = io.save(fName, ba);
     if (result.isEmpty()) {
         mc_synchelper->refreshDocument();
-        m_mdEditor->moveCursor(QTextCursor::Start);
-        m_mdEditor->verticalScrollBar()->setValue(0);
         QString title = QString(APPNAME) + " - " + m_fileName + PLACEHOLDER;
         setWindowTitle(title);
         setWindowModified(false);
-        QTimer::singleShot(0, m_mdViewer, [this] {
-            m_mdViewer->moveCursor(QTextCursor::Start);
-            m_mdViewer->verticalScrollBar()->setValue(0);
-        });
         return true;
     } else mc_dialogs.showDialogDisplayError(result);
     return false;
@@ -447,3 +482,16 @@ void MainWindow::setSync(bool enabled) {
         ui->mainOptionsSync->setText(tr("Enable scroll synchronization"));
     }
 }
+
+void MainWindow::bringToFront() {
+    if (isMinimized()) showNormal();
+    raise();
+    activateWindow();
+#ifdef Q_OS_WIN
+    HWND hwnd = reinterpret_cast<HWND>(winId());
+    SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+    SetWindowPos(hwnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+    SetForegroundWindow(hwnd);
+#endif
+}
+

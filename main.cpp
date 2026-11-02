@@ -3,22 +3,37 @@
 // Purpose:     Main
 // Author:      Jan Buchholz
 // Created:     2025-11-23
-// Changed:     2026-04-05
+// Changed:     2026-11-01
 /////////////////////////////////////////////////////////////////////////////
 
 #include "mainwindow.h"
-#include <QApplication>
+#include "markdownapplication.h"
 #include <QStyleFactory>
-#include <QLibraryInfo>
 
 int main(int argc, char *argv[]) {
-    QApplication a(argc, argv);
+    QString filePath{};
+    MarkdownApplication app(argc, argv);
+    const QStringList args = QCoreApplication::arguments();
+    if (args.size() > 1) {
+        filePath = args.at(1);
+#if !defined (Q_OS_MACOS)
+        // Instance already running?
+        if (app.sendFileToRunningInstance(filePath)) return 0;
+#endif
+    }
 #if defined (Q_OS_WIN)
-    a.setStyle(QStyleFactory::create("fusion"));
-#elif defined (Q_OS_APPLE)
-    a.setStyle(QStyleFactory::create("macos"));
+    app.setStyle(QStyleFactory::create("fusion"));
+#elif defined (Q_OS_MACOS)
+    app.setStyle(QStyleFactory::create("macos"));
 #endif
     MainWindow w;
+    app.setMainWindow(&w);
     w.show();
-    return a.exec();
+#if !defined (Q_OS_MACOS)
+    app.startLocalServer(&w);
+#endif
+    if (!filePath.isEmpty()) {
+        w.openFile(filePath);
+    }
+    return app.exec();
 }
