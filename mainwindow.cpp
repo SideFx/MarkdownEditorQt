@@ -65,7 +65,7 @@ void MainWindow::createToolBar() {
     m_mainToolBar->setOrientation(Qt::Horizontal);
     m_mainToolBar->setAutoFillBackground(true);
     m_mainToolBar->setIconSize(QSize(DEF_ICONSIZE, DEF_ICONSIZE));
-    m_mainToolBar->setFixedHeight(26);
+    m_mainToolBar->setFixedHeight(28);
 #if defined(Q_OS_WIN)
     m_mainToolBar->setStyleSheet(styleToolBar);
     pointSize = 10;
@@ -190,7 +190,7 @@ void MainWindow::setConnections() {
     connect(ui->mainOptionsSync, &QAction::toggled, this, &MainWindow::onOptionsSync);
     connect(ui->mainAppInfo, &QAction::triggered, this, &MainWindow::onAppInfo);
     connect(ui->mainAppQuit, &QAction::triggered, this, &MainWindow::onAppQuit);
-    connect(m_fontComboBox, &QFontComboBox::currentFontChanged, this, &MainWindow::onCurrentFontChanged);
+    connect(m_fontComboBox, &JBFontComboBox::currentFontChanged, this, &MainWindow::onCurrentFontChanged);
     connect(m_fontSizeBox, &QComboBox::currentTextChanged, this, &MainWindow::onCurrentTextChanged);
     connect(m_mdEditor, &QTextEdit::textChanged, this, [this]() { m_timer->start(); });
     connect(m_timer, &QTimer::timeout, this, &MainWindow::onTextChanged);
