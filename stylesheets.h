@@ -33,7 +33,7 @@ QString styleToolBarMac = R"(
 
         }
 )";
-QString styleStatuBarMac = R"(
+QString styleStatusBarMac = R"(
         QStatusBar {
             border: 0px;
             background-color: whiteSmoke;

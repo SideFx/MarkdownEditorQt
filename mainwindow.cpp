@@ -40,7 +40,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     populateMainMenu();
     setCentralWidget(m_mainSplitter);
     setUnifiedTitleAndToolBarOnMac(false);
-    //setAutoFillBackground(true);
     mc_synchronizer = new ScrollSynchronizer(m_mdEditor, m_mdViewer, this);
     mc_synchelper = new SyncHelper(m_mdEditor, m_mdViewer, this);
     m_sync = true;
@@ -59,6 +58,7 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::createToolBar() {
+    int pointSize;
     m_mainToolBar = new QToolBar(this);
     m_mainToolBar->setObjectName("mainToolbar");
     m_mainToolBar->setMovable(false);
@@ -68,8 +68,10 @@ void MainWindow::createToolBar() {
     m_mainToolBar->setFixedHeight(26);
 #if defined(Q_OS_WIN)
     m_mainToolBar->setStyleSheet(styleToolBar);
+    pointSize = 10;
 #elif defined(Q_OS_MACOS)
     m_mainToolBar->setStyleSheet(styleToolBarMac);
+    pointSize = 12;
 #endif
     this->addToolBar(Qt::TopToolBarArea, m_mainToolBar);
     m_mainToolBar->addAction(ui->mainNewFile);
@@ -97,7 +99,7 @@ void MainWindow::createToolBar() {
     m_fontComboBox = new JBFontComboBox(this);
     m_fontComboBox->setFontFilters(QFontComboBox::ScalableFonts);
     m_fontComboBox->setWritingSystem(QFontDatabase::Latin);
-    m_fontComboBox->setItemFontSize(12);
+    m_fontComboBox->setItemFontSize(pointSize);
     m_mainToolBar->addWidget(m_fontComboBox);
     m_fontSizeBox = new QComboBox(this);
     m_fontSizeBox->addItems(fontSizeList);
@@ -140,8 +142,7 @@ void MainWindow::createStatusBar() {
     m_statusBar = new QStatusBar(this);
     this->setStatusBar(m_statusBar);
 #if defined(Q_OS_MACOS)
-    //m_statusBar->setVisible(false);
-    m_statusBar->setStyleSheet(styleStatuBarMac);
+    m_statusBar->setStyleSheet(styleStatusBarMac);
 #endif
 }
 
