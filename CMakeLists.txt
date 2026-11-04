@@ -35,6 +35,7 @@ qt_add_executable(MarkdownEditorQt
     app.icns app.ico appicon.rc
     Info.plist.in
     markdownapplication.h markdownapplication.cpp
+    jbfontcombobox.hpp
 )
 
 target_link_libraries(MarkdownEditorQt PRIVATE

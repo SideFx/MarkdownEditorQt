@@ -3,7 +3,7 @@
 // Purpose:     The main window (header)
 // Author:      Jan Buchholz
 // Created:     2025-11-23
-// Changed:     2026-11-01
+// Changed:     2026-11-04
 /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
@@ -16,6 +16,7 @@
 #include <QTextBrowser>
 #include <QTextEdit>
 #include <QTimer>
+#include "jbfontcombobox.hpp"
 #include "dialogs.h"
 #include "scrollsynchronizer.h"
 #include "synchelper.h"
@@ -42,7 +43,7 @@ private:
     QTextBrowser *m_mdViewer;
     QTextEdit *m_mdEditor;
     QSplitter *m_mainSplitter;
-    QFontComboBox *m_fontComboBox;
+    JBFontComboBox *m_fontComboBox;
     QComboBox *m_fontSizeBox;
 
     QString m_lastFolder;
@@ -55,7 +56,7 @@ private:
     bool m_sync;
     bool m_dirty;
     bool m_handleFileOpen;
-    const QStringList fontSizeList = {"8", "9", "10", "11", "12", "13", "14", "16", "18"};
+    const QStringList fontSizeList = {"8", "9", "10", "11", "12", "13", "14", "16", "18", "20", "22"};
     void createMdViewer();
     void createMdEditor();
     void createToolBar();

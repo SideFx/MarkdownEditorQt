@@ -3,14 +3,14 @@
 // Purpose:     Style sheets for QToolBar & QToolButton
 // Author:      Jan Buchholz
 // Created:     2025-10-13
-// Changed:     2026-05-22
+// Changed:     2026-11-04
 /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
 
 #include <QString>
 
-QString styleToolButton = R"(
+QString styleToolBarMac = R"(
         QToolBar > QToolButton {
             border-radius: 3px;
             padding: 2px 2px;
@@ -26,6 +26,25 @@ QString styleToolButton = R"(
         QToolBar > QToolButton:checked {
             background-color: darkGray;
             border-color: auto;
+        }
+        QToolBar {
+            border: 0px;
+            background-color: whiteSmoke;
+
+        }
+)";
+QString styleStatuBarMac = R"(
+        QStatusBar {
+            border: 0px;
+            background-color: whiteSmoke;
+        }
+)";
+QString styleSplitterHandle = R"(
+        QSplitter::handle:horizontal {
+            width: 1px;
+        }
+        QSplitter::handle:vertical {
+            height: 1px;
         }
 )";
 
@@ -56,12 +75,3 @@ QString styleToolBar = R"(
         }
 )";
 
-// reduce the size of the splitter handle for macOS
-QString styleSplitterHandle = R"(
-        QSplitter::handle:horizontal {
-            width: 1px;
-        }
-        QSplitter::handle:vertical {
-            height: 1px;
-        }
-)";

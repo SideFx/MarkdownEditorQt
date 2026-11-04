@@ -19,6 +19,7 @@
 #include "conversions.hpp"
 #include <QDir>
 #include <QScrollBar>
+#include <QAbstractItemView>
 #include "fixedsplitter.hpp"
 
 #ifdef Q_OS_WIN
@@ -38,8 +39,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     createStatusBar();
     populateMainMenu();
     setCentralWidget(m_mainSplitter);
-    setUnifiedTitleAndToolBarOnMac(true);
-    setAutoFillBackground(true);
+    setUnifiedTitleAndToolBarOnMac(false);
+    //setAutoFillBackground(true);
     mc_synchronizer = new ScrollSynchronizer(m_mdEditor, m_mdViewer, this);
     mc_synchelper = new SyncHelper(m_mdEditor, m_mdViewer, this);
     m_sync = true;
@@ -68,7 +69,7 @@ void MainWindow::createToolBar() {
 #if defined(Q_OS_WIN)
     m_mainToolBar->setStyleSheet(styleToolBar);
 #elif defined(Q_OS_MACOS)
-    m_mainToolBar->setStyleSheet(styleToolButton);
+    m_mainToolBar->setStyleSheet(styleToolBarMac);
 #endif
     this->addToolBar(Qt::TopToolBarArea, m_mainToolBar);
     m_mainToolBar->addAction(ui->mainNewFile);
@@ -93,9 +94,10 @@ void MainWindow::createToolBar() {
     QWidget* spacerSmall = new QWidget(this);
     spacerSmall->setMinimumWidth(25);
     m_mainToolBar->addWidget(spacerSmall);
-    m_fontComboBox = new QFontComboBox(this);
+    m_fontComboBox = new JBFontComboBox(this);
     m_fontComboBox->setFontFilters(QFontComboBox::ScalableFonts);
     m_fontComboBox->setWritingSystem(QFontDatabase::Latin);
+    m_fontComboBox->setItemFontSize(12);
     m_mainToolBar->addWidget(m_fontComboBox);
     m_fontSizeBox = new QComboBox(this);
     m_fontSizeBox->addItems(fontSizeList);
@@ -138,7 +140,8 @@ void MainWindow::createStatusBar() {
     m_statusBar = new QStatusBar(this);
     this->setStatusBar(m_statusBar);
 #if defined(Q_OS_MACOS)
-    m_statusBar->setVisible(false);
+    //m_statusBar->setVisible(false);
+    m_statusBar->setStyleSheet(styleStatuBarMac);
 #endif
 }
 

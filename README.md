@@ -44,7 +44,6 @@ MarkdownEditorQt is a Qt6-based application for editing and previewing Markdown 
 
 **2026-05-21:**
 - Fixed scroll sync setting on app's first start
-- Scroll document to top after save (both editor and viewer)
 
 **2026-05-22:**
 - Refactor: Qt-RAII (parent-child relationship, using stack objects)
@@ -57,4 +56,6 @@ MarkdownEditorQt is a Qt6-based application for editing and previewing Markdown 
 - Preserved scroll position after saving
 - MSYS2: Added documentation on how to use the provided shell scripts
 
-
+**2026-11-04:**
+- macOS: Made some style adjustments for macOS 27
+- Implemented less cluttered font combobox (derived from QFontComboBox)
