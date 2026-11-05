@@ -25,7 +25,7 @@ qt_add_executable(MarkdownEditorQt
     jbpreferences.cpp jbpreferences.h
     resources.qrc
     dialogs.h dialogs.cpp
-    io.h io.cpp
+    appio.h appio.cpp
     aboutdialog.h aboutdialog.cpp aboutdialog.ui
     scrollsynchronizer.h scrollsynchronizer.cpp
     conversions.hpp

@@ -15,7 +15,7 @@
 #include "constants.h"
 #include "jbpreferences.h"
 #include "aboutdialog.h"
-#include "io.h"
+#include "appio.h"
 #include "conversions.hpp"
 #include <QDir>
 #include <QScrollBar>
@@ -266,7 +266,7 @@ void MainWindow::openFile(const QString &filePath) {
     m_lastFolder = fileInfo.path();
     m_fileName = fileInfo.fileName();
     QByteArray ba;
-    Io io;
+    AppIo io;
     QString result = io.load(filePath, &ba);
     if (result.isEmpty()) {
         mc_synchelper->invalidateImageCache();
@@ -458,7 +458,7 @@ bool MainWindow::fileOpen() {
         m_lastFolder = fileInfo.path();
         m_fileName = fileInfo.fileName();
         QByteArray ba;
-        Io io;
+        AppIo io;
         QString result = io.load(fName, &ba);
         if (result.isEmpty()) {
             mc_synchelper->invalidateImageCache();
@@ -488,7 +488,7 @@ bool MainWindow::fileSave(bool saveAs) { //saveAs default false
         fName = fileInfo.absoluteFilePath();
     }
     QByteArray ba = StringToByteArray(m_mdEditor->toPlainText());
-    Io io;
+    AppIo io;
     QString result = io.save(fName, ba);
     if (result.isEmpty()) {
         mc_synchelper->refreshDocument();
