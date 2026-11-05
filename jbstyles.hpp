@@ -1,6 +1,6 @@
 /////////////////////////////////////////////////////////////////////////////
-// Name:        jbstyles.h
-// Purpose:     Style sheets and SVG icon color change
+// Name:        jbstyles.hpp
+// Purpose:     Stylesheets and SVG icon color change
 // Author:      Jan Buchholz
 // Created:     2025-10-13
 // Changed:     2026-11-05
@@ -15,7 +15,7 @@
 #include <QGuiApplication>
 #include <QPalette>
 
-QIcon createThemedIcon(const QString &resourcePath) {
+inline QIcon createThemedIcon(const QString &resourcePath) {
     QPixmap pixmap(resourcePath);
     if (pixmap.isNull()) return QIcon();
     // ---get text color from system theme---
@@ -28,7 +28,7 @@ QIcon createThemedIcon(const QString &resourcePath) {
     return QIcon(pixmap);
 }
 
-QString styleToolBar = R"(
+inline QString styleToolBar = R"(
         QToolBar > QToolButton {
             border-radius: 3px;
             padding: 2px 2px;
@@ -51,14 +51,14 @@ QString styleToolBar = R"(
         }
 )";
 
-QString styleStatusBar = R"(
+inline QString styleStatusBar = R"(
         QStatusBar {
             border: 0px;
             padding: 1px 1px;
         }
 )";
 
-QString styleSplitterHandle = R"(
+inline QString styleSplitterHandle = R"(
         QSplitter::handle:horizontal {
             width: 1px;
         }
