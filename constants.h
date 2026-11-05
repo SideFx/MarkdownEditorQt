@@ -20,6 +20,7 @@
 #define SET_EDITORFONT "options/editorfont"
 #define PLACEHOLDER " [*]"
 
-inline const QString APPVERSION = "v2.2.1";
+inline const QString APPVERSION = "v2.3";
 
 int constexpr DEF_ICONSIZE = 16;
+int constexpr DEF_TB_HEIGHT = 30;

@@ -3,7 +3,7 @@
 // Purpose:     Derived from QFontComboBox
 // Author:      Jan Buchholz
 // Created:     2026-11-03
-// Changed:     2026-11-04
+// Changed:     2026-11-05
 /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
@@ -19,7 +19,7 @@ class JBFontComboBox : public QFontComboBox {
 
 public:
     explicit JBFontComboBox(QWidget *parent = nullptr) : QFontComboBox(parent), m_itemFontSize(-1) {}
-    // Set font size for selected font and font list
+    // ---set font size for selected font and font list---
     void setItemFontSize(int pointSize) {
         m_itemFontSize = pointSize;
         QFont f = this->font();
@@ -27,7 +27,7 @@ public:
             f.setPointSize(pointSize);
         }
         this->setFont(f);
-        // Delegate for Dropdown menu
+        // ---delegate for Dropdown menu---
         if (pointSize > 0) {
             view()->setItemDelegate(new FontSizeDelegate(pointSize, this));
         } else {
@@ -55,7 +55,7 @@ private:
                 }
                 option->font.setPointSize(m_pointSize);
             }
-            // single line in list
+            // ---single line in list---
             QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override {
                 QSize size = QStyledItemDelegate::sizeHint(option, index);
                 QFontMetrics fm(option.font);

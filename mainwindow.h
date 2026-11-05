@@ -3,7 +3,7 @@
 // Purpose:     The main window (header)
 // Author:      Jan Buchholz
 // Created:     2025-11-23
-// Changed:     2026-11-04
+// Changed:     2026-11-05
 /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
@@ -34,6 +34,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void closeEvent(QCloseEvent *e);
+    bool event(QEvent *event);
     void openFile(const QString &filePath);
 
 private:
@@ -63,6 +64,7 @@ private:
     void createSplitter();
     void createStatusBar();
     void populateMainMenu();
+    void setIcons();
     void setConnections();
     void savePreferences();
     void loadPreferences();

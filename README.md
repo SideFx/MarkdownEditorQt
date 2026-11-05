@@ -59,3 +59,9 @@ MarkdownEditorQt is a Qt6-based application for editing and previewing Markdown 
 **2026-11-04:**
 - macOS: Made some style adjustments for macOS 27
 - Implemented less cluttered font combobox (derived from QFontComboBox)
+
+**2026-11-05:**
+- App now supports light and dark themes
+- On-the-fly theme switching
+- Refined stylesheets
+

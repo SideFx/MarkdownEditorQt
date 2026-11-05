@@ -20,7 +20,7 @@ qt_add_executable(MarkdownEditorQt
     mainwindow.cpp
     mainwindow.h
     mainwindow.ui
-    stylesheets.h
+    jbstyles.hpp
     constants.h
     jbpreferences.cpp jbpreferences.h
     resources.qrc

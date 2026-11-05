@@ -3,7 +3,7 @@
 // Purpose:     The main window
 // Author:      Jan Buchholz
 // Created:     2025-11-23
-// Changed:     2026-11-02
+// Changed:     2026-11-05
 /////////////////////////////////////////////////////////////////////////////
 
 #include "mainwindow.h"
@@ -11,7 +11,7 @@
 #include <QStandardPaths>
 #include <QMessageBox>
 #include <QFileInfo>
-#include "stylesheets.h"
+#include "jbstyles.hpp"
 #include "constants.h"
 #include "jbpreferences.h"
 #include "aboutdialog.h"
@@ -32,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     ui->setupUi(this);
     ui->mainAppInfo->setToolTip(tr("About") + " " + APPNAME);
     ui->mainAppInfo->setText(tr("About") + " " + APPNAME);
+    setIcons();
     createToolBar();
     createMdViewer();
     createMdEditor();
@@ -58,19 +59,16 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::createToolBar() {
-    int pointSize;
+    int pointSize = 10;
     m_mainToolBar = new QToolBar(this);
     m_mainToolBar->setObjectName("mainToolbar");
     m_mainToolBar->setMovable(false);
     m_mainToolBar->setOrientation(Qt::Horizontal);
     m_mainToolBar->setAutoFillBackground(true);
     m_mainToolBar->setIconSize(QSize(DEF_ICONSIZE, DEF_ICONSIZE));
-    m_mainToolBar->setFixedHeight(28);
-#if defined(Q_OS_WIN)
+    m_mainToolBar->setFixedHeight(DEF_TB_HEIGHT);
     m_mainToolBar->setStyleSheet(styleToolBar);
-    pointSize = 10;
-#elif defined(Q_OS_MACOS)
-    m_mainToolBar->setStyleSheet(styleToolBarMac);
+#if defined(Q_OS_MACOS)
     pointSize = 12;
 #endif
     this->addToolBar(Qt::TopToolBarArea, m_mainToolBar);
@@ -133,17 +131,35 @@ void MainWindow::createSplitter() {
     m_mainSplitter->addWidget(m_mdEditor);
     m_mainSplitter->addWidget(m_mdViewer);
     m_mainSplitter->setSizes({1, 1});
-#if defined(Q_OS_MACOS)
     m_mainSplitter->setStyleSheet(styleSplitterHandle);
-#endif
 }
 
 void MainWindow::createStatusBar() {
     m_statusBar = new QStatusBar(this);
     this->setStatusBar(m_statusBar);
-#if defined(Q_OS_MACOS)
-    m_statusBar->setStyleSheet(styleStatusBarMac);
-#endif
+    m_statusBar->setStyleSheet(styleStatusBar);
+}
+
+// ---adapt svg icons to selected theme (light/dark)---
+void MainWindow::setIcons() {
+    ui->mainNewFile->setIcon(createThemedIcon(":/tb/assets/mainTB_New.svg"));
+    ui->mainOpenFile->setIcon(createThemedIcon(":/tb/assets/mainTB_Open.svg"));
+    ui->mainSaveFile->setIcon(createThemedIcon(":/tb/assets/mainTB_Save.svg"));
+    ui->mainSaveFileAs->setIcon(createThemedIcon(":/tb/assets/mainTB_SaveAs.svg"));
+    ui->mainAppInfo->setIcon(createThemedIcon(":/tb/assets/mainTB_Info.svg"));
+    ui->mainAppQuit->setIcon(createThemedIcon(":/tb/assets/mainTB_Quit_2.svg"));
+    ui->mainEditCopy->setIcon(createThemedIcon(":/tb/assets/mainTB_Copy.svg"));
+    ui->mainEditCut->setIcon(createThemedIcon(":/tb/assets/mainTB_Cut.svg"));
+    ui->mainEditPaste->setIcon(createThemedIcon(":/tb/assets/mainTB_Paste.svg"));
+    ui->mainEditSelectAll->setIcon(createThemedIcon(":/tb/assets/mainTB_SelectAll.svg"));
+    ui->mainEditUndo->setIcon(createThemedIcon(":/tb/assets/mainTB_Undo.svg"));
+    ui->mainEditRedo->setIcon(createThemedIcon(":/tb/assets/mainTB_Redo.svg"));
+    ui->mainOptionsSync->setIcon(createThemedIcon(":/tb/assets/mainTB_Sync.svg"));
+    ui->mainEditFormatBold->setIcon(createThemedIcon(":/tb/assets/mainTB_FormatBold.svg"));
+    ui->mainEditFormatItalic->setIcon(createThemedIcon(":/tb/assets/mainTB_FormatItalic.svg"));
+    ui->mainEditFormatStrikethrough->setIcon(createThemedIcon(":/tb/assets/mainTB_FormatStrikethrough.svg"));
+    ui->mainEditFormatCode->setIcon(createThemedIcon(":/tb/assets/mainTB_FormatCode.svg"));
+    ui->mainEditFormatHighlight->setIcon(createThemedIcon(":/tb/assets/mainTB_FormatHighlight.svg"));
 }
 
 void MainWindow::populateMainMenu() {
@@ -281,6 +297,14 @@ void MainWindow::closeEvent(QCloseEvent *e) {
     savePreferences();
     setWindowModified(false);
     e->accept();
+}
+
+// ---react to theme changes---
+bool MainWindow::event(QEvent *event) {
+    if (event->type() == QEvent::ThemeChange) {
+        setIcons();
+    }
+    return QMainWindow::event(event);
 }
 
 void MainWindow::onTextChanged() {
