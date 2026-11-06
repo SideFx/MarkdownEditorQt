@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(MarkdownEditorQt VERSION 0.1 LANGUAGES CXX)
+set(PROJECT_NAME "MarkdownEditorQt")
+project(${PROJECT_NAME} VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -13,7 +14,7 @@ find_package(Qt6 REQUIRED COMPONENTS Core Widgets Network Svg)
 
 add_subdirectory("${CMAKE_SOURCE_DIR}/md4c")
 
-qt_add_executable(MarkdownEditorQt
+qt_add_executable(${PROJECT_NAME}
     WIN32 MACOSX_BUNDLE
     MANUAL_FINALIZATION
     main.cpp
@@ -38,7 +39,7 @@ qt_add_executable(MarkdownEditorQt
     jbfontcombobox.hpp
 )
 
-target_link_libraries(MarkdownEditorQt PRIVATE
+target_link_libraries(${PROJECT_NAME} PRIVATE
     Qt6::Core
     Qt6::Widgets
     Qt6::Network
@@ -54,7 +55,7 @@ if(APPLE)
 endif()
 
 # ---- Bundle Properties ----
-set_target_properties(MarkdownEditorQt PROPERTIES
+set_target_properties(${PROJECT_NAME} PROPERTIES
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
     MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/Info.plist.in
@@ -64,7 +65,7 @@ set_target_properties(MarkdownEditorQt PROPERTIES
 
 # ---- Installation ----
 include(GNUInstallDirs)
-install(TARGETS MarkdownEditorQt
+install(TARGETS ${PROJECT_NAME}
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
@@ -90,16 +91,16 @@ if(APPLE)
         COMMAND ${MACDEPLOYQT} "$<TARGET_BUNDLE_DIR:${PROJECT_NAME}>" -verbose=2
     )
     # 3. Sign using two different steps
-    add_custom_command(TARGET MarkdownEditorQt POST_BUILD
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
             # Schritt A: Deep signing of frameworks/libraries (without entitlements)
-            COMMAND codesign --force --deep --sign - --timestamp=none "$<TARGET_BUNDLE_DIR:MarkdownEditorQt>"
+            COMMAND codesign --force --deep --sign - --timestamp=none "$<TARGET_BUNDLE_DIR:${PROJECT_NAME}>"
             # Schritt B: Debug entitlements for main executable only
             COMMAND codesign --force --sign - --timestamp=none --entitlements
-            ${CMAKE_CURRENT_BINARY_DIR}/debug_entitlements.plist "$<TARGET_FILE:MarkdownEditorQt>"
+            ${CMAKE_CURRENT_BINARY_DIR}/debug_entitlements.plist "$<TARGET_FILE:${PROJECT_NAME}>"
     )
 endif()
 
 if(QT_VERSION_MAJOR EQUAL 6)
-    qt_finalize_executable(MarkdownEditorQt)
+    qt_finalize_executable(${PROJECT_NAME})
 endif()
 

@@ -3,7 +3,7 @@
 // Purpose:     Create About dialog
 // Author:      Jan Buchholz
 // Created:     2025-10-13
-// Changed:     2026-11-05
+// Changed:     2026-11-06
 /////////////////////////////////////////////////////////////////////////////
 
 #include <QPushButton>
@@ -12,10 +12,9 @@
 
 AboutDialog::AboutDialog(QWidget *parent) : QDialog(parent), ui(new Ui::AboutDialog) {
     ui->setupUi(this);
-    setAutoFillBackground(true);
-    setStyleSheet("QDialog { background-color: palette(window); }");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Close"));
     ui->lbl_text1->setText(TxtAbout);
+    setAutoFillBackground(true);
     adjustSize();
     setFixedSize(size());
 }
