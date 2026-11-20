@@ -3,7 +3,7 @@
 // Purpose:     Constants and text snippets
 // Author:      Jan Buchholz
 // Created:     2025-11-23
-// Changed:     2026-11-04
+// Changed:     2026-11-20
 /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
@@ -18,9 +18,12 @@
 #define SET_LASTFOLDER "file/lastfolder"
 #define SET_SYNC "options/sync"
 #define SET_EDITORFONT "options/editorfont"
+#define SET_THEME "options/theme"
 #define PLACEHOLDER " [*]"
 
-inline const QString APPVERSION = "v2.3";
+inline const QString APPVERSION = "v2.4";
+inline const QString DARKTHEME = "dark";
+inline const QString LIGHTTHEME = "light";
 
 int constexpr DEF_ICONSIZE = 16;
 int constexpr DEF_TB_HEIGHT = 30;

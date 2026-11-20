@@ -3,7 +3,7 @@
 // Purpose:     The main window
 // Author:      Jan Buchholz
 // Created:     2025-11-23
-// Changed:     2026-11-05
+// Changed:     2026-11-20
 /////////////////////////////////////////////////////////////////////////////
 
 #include "mainwindow.h"
@@ -11,6 +11,7 @@
 #include <QStandardPaths>
 #include <QMessageBox>
 #include <QFileInfo>
+#include <QStyleHints>
 #include "jbstyles.hpp"
 #include "constants.h"
 #include "jbpreferences.h"
@@ -184,6 +185,8 @@ void MainWindow::populateMainMenu() {
     ui->menuEdit->addAction(ui->mainEditFormatCode);
     ui->menuEdit->addAction(ui->mainEditFormatHighlight);
     ui->menuOptions->addAction(ui->mainOptionsSync);
+    ui->menuOptions->addSeparator();
+    ui->menuOptions->addAction(ui->mainOptionsTheme);
     ui->menuHelp->addAction(ui->mainAppInfo);
 }
 
@@ -204,6 +207,7 @@ void MainWindow::setConnections() {
     connect(ui->mainEditFormatCode, &QAction::triggered, this, &MainWindow::onEditFormat);
     connect(ui->mainEditFormatHighlight, &QAction::triggered, this, &MainWindow::onEditFormat);
     connect(ui->mainOptionsSync, &QAction::toggled, this, &MainWindow::onOptionsSync);
+    connect(ui->mainOptionsTheme, &QAction::triggered, this, &MainWindow::onOptionsThemeChanged);
     connect(ui->mainAppInfo, &QAction::triggered, this, &MainWindow::onAppInfo);
     connect(ui->mainAppQuit, &QAction::triggered, this, &MainWindow::onAppQuit);
     connect(m_fontComboBox, &JBFontComboBox::currentFontChanged, this, &MainWindow::onCurrentFontChanged);
@@ -219,11 +223,18 @@ void MainWindow::savePreferences() {
     prefs.PushBoolean(SET_SYNC, m_sync);
     prefs.PushString(SET_LASTFOLDER, m_lastFolder);
     prefs.PushFont(SET_EDITORFONT, m_mdViewer->font());
+    auto *hints = QGuiApplication::styleHints();
+    if (hints->colorScheme() == Qt::ColorScheme::Dark) {
+        prefs.PushString(SET_THEME, DARKTHEME);
+    } else {
+        prefs.PushString(SET_THEME, LIGHTTHEME);
+    }
     prefs.SavePreferencesToDefaultLocation(SET_COMPANY, APPNAME);
 }
 
 void MainWindow::loadPreferences() {
     JBPreferences prefs;
+    QString theme = LIGHTTHEME;
     if (prefs.LoadPreferencesFromDefaultLocation(SET_COMPANY, APPNAME)) {
         try {
             restoreGeometry(prefs.PopArray(SET_WGEOMETRY));
@@ -238,9 +249,13 @@ void MainWindow::loadPreferences() {
                 m_mdViewer->setFont(efont);
                 m_mdEditor->setFont(efont);
             }
+            theme = prefs.PopString(SET_THEME);
         }
         catch (...) {}
     }
+    auto *hints = QGuiApplication::styleHints();
+    if (theme == DARKTHEME) hints->setColorScheme(Qt::ColorScheme::Dark);
+    else hints->setColorScheme(Qt::ColorScheme::Light);
     if (m_lastFolder.isEmpty())
         m_lastFolder = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
 }
@@ -305,6 +320,17 @@ bool MainWindow::event(QEvent *event) {
         setIcons();
     }
     return QMainWindow::event(event);
+}
+
+void MainWindow::onOptionsThemeChanged() {
+    auto *hints = QGuiApplication::styleHints();
+    // Toggle between light and dark theme
+    if (hints->colorScheme() == Qt::ColorScheme::Dark) {
+        hints->setColorScheme(Qt::ColorScheme::Light);
+    } else {
+        hints->setColorScheme(Qt::ColorScheme::Dark);
+    }
+    // optional: Qt::ColorScheme::Unknown
 }
 
 void MainWindow::onTextChanged() {

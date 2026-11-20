@@ -3,7 +3,7 @@
 // Purpose:     The main window (header)
 // Author:      Jan Buchholz
 // Created:     2025-11-23
-// Changed:     2026-11-05
+// Changed:     2026-11-18
 /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
@@ -93,6 +93,7 @@ private slots:
     void onCurrentFontChanged(const QFont);
     void onCurrentTextChanged(const QString);
     void onTextChanged();
+    void onOptionsThemeChanged();
 
 };
 

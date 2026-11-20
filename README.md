@@ -65,3 +65,9 @@ MarkdownEditorQt is a Qt6-based application for editing and previewing Markdown 
 - On-the-fly theme switching
 - Refined stylesheets
 
+**2026-11-18:**
+- Option to override the system theme (light/dark mode): Menu->Options->Switch theme
+
+**2026-11-20:**
+- The selected theme (light/dark mode) is now saved in the application settings and will be restored upon application launch
+ 
