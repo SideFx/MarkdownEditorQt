@@ -3,7 +3,7 @@
 // Purpose:     Main
 // Author:      Jan Buchholz
 // Created:     2025-11-23
-// Changed:     2026-11-01
+// Changed:     2026-11-20
 /////////////////////////////////////////////////////////////////////////////
 
 #include "mainwindow.h"
@@ -22,6 +22,8 @@ int main(int argc, char *argv[]) {
 #endif
     }
 #if defined (Q_OS_WIN)
+    app.setStyle(QStyleFactory::create("fusion"));
+ #elif defined (Q_OS_LINUX)
     app.setStyle(QStyleFactory::create("fusion"));
 #elif defined (Q_OS_MACOS)
     app.setStyle(QStyleFactory::create("macos"));

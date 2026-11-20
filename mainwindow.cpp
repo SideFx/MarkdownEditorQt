@@ -12,6 +12,7 @@
 #include <QMessageBox>
 #include <QFileInfo>
 #include <QStyleHints>
+#include <QStyleFactory>
 #include "jbstyles.hpp"
 #include "constants.h"
 #include "jbpreferences.h"
@@ -185,8 +186,10 @@ void MainWindow::populateMainMenu() {
     ui->menuEdit->addAction(ui->mainEditFormatCode);
     ui->menuEdit->addAction(ui->mainEditFormatHighlight);
     ui->menuOptions->addAction(ui->mainOptionsSync);
+#if !defined (Q_OS_LINUX) // on-the-fly switching doesn't work at all (Fedora, KDE plasma)
     ui->menuOptions->addSeparator();
     ui->menuOptions->addAction(ui->mainOptionsTheme);
+#endif
     ui->menuHelp->addAction(ui->mainAppInfo);
 }
 
@@ -323,14 +326,9 @@ bool MainWindow::event(QEvent *event) {
 }
 
 void MainWindow::onOptionsThemeChanged() {
-    auto *hints = QGuiApplication::styleHints();
-    // Toggle between light and dark theme
-    if (hints->colorScheme() == Qt::ColorScheme::Dark) {
-        hints->setColorScheme(Qt::ColorScheme::Light);
-    } else {
-        hints->setColorScheme(Qt::ColorScheme::Dark);
-    }
-    // optional: Qt::ColorScheme::Unknown
+    Qt::ColorScheme newScheme = (QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark)
+        ? Qt::ColorScheme::Light : Qt::ColorScheme::Dark;
+    QGuiApplication::styleHints()->setColorScheme(newScheme);
 }
 
 void MainWindow::onTextChanged() {

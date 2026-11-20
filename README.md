@@ -70,4 +70,4 @@ MarkdownEditorQt is a Qt6-based application for editing and previewing Markdown 
 
 **2026-11-20:**
 - The selected theme (light/dark mode) is now saved in the application settings and will be restored upon application launch
- 
+ - Disabled the menu "Options->Switch theme" on Linux since on-the-fly switching doesn't work at all (tested on Fedora 45 and KDE plasma desktop)
