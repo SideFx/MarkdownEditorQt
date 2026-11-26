@@ -3,7 +3,7 @@
 // Purpose:     Keep MD viewer in sync with MD editor (header)
 // Author:      Jan Buchholz
 // Created:     2025-11-26
-// Changed:     2026-05-22
+// Changed:     2026-11-26
 /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
@@ -31,6 +31,6 @@ private:
     QString m_documentPath;
     void processImages();
 
-    const QString c_highlighting = "<span style=\"background-color:#FAE098\">\\1</span>";
+    const QString c_highlighting = "<span style=\"background-color:#989898\">\\1</span>";
 };
 

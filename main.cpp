@@ -3,7 +3,7 @@
 // Purpose:     Main
 // Author:      Jan Buchholz
 // Created:     2025-11-23
-// Changed:     2026-11-20
+// Changed:     2026-11-22
 /////////////////////////////////////////////////////////////////////////////
 
 #include "mainwindow.h"
@@ -21,12 +21,10 @@ int main(int argc, char *argv[]) {
         if (app.sendFileToRunningInstance(filePath)) return 0;
 #endif
     }
-#if defined (Q_OS_WIN)
-    app.setStyle(QStyleFactory::create("fusion"));
- #elif defined (Q_OS_LINUX)
-    app.setStyle(QStyleFactory::create("fusion"));
-#elif defined (Q_OS_MACOS)
+#if defined (Q_OS_MACOS)
     app.setStyle(QStyleFactory::create("macos"));
+#else
+    app.setStyle(QStyleFactory::create("fusion"));
 #endif
     MainWindow w;
     app.setMainWindow(&w);

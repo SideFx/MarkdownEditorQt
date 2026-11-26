@@ -26,6 +26,7 @@
         <file>assets/mainTB_FormatCode.svg</file>
         <file>assets/mainTB_FormatHighlight.svg</file>
         <file>assets/mainTB_FormatStrikethrough.svg</file>
+        <file>assets/mainTB_Theme.svg</file>
     </qresource>
     <qresource prefix="/png">
         <file>assets/logo.png</file>

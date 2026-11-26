@@ -23,6 +23,7 @@
 #include <QScrollBar>
 #include <QAbstractItemView>
 #include "fixedsplitter.hpp"
+#include "thememanager.hpp"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -34,7 +35,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     ui->setupUi(this);
     ui->mainAppInfo->setToolTip(tr("About") + " " + APPNAME);
     ui->mainAppInfo->setText(tr("About") + " " + APPNAME);
-    setIcons();
     createToolBar();
     createMdViewer();
     createMdEditor();
@@ -75,24 +75,40 @@ void MainWindow::createToolBar() {
 #endif
     this->addToolBar(Qt::TopToolBarArea, m_mainToolBar);
     m_mainToolBar->addAction(ui->mainNewFile);
+    ThemeManager::registerActionIcon(ui->mainNewFile, ":/tb/assets/mainTB_New.svg");
     m_mainToolBar->addAction(ui->mainOpenFile);
+    ThemeManager::registerActionIcon(ui->mainOpenFile, ":/tb/assets/mainTB_Open.svg");
     m_mainToolBar->addAction(ui->mainSaveFile);
+    ThemeManager::registerActionIcon(ui->mainSaveFile, ":/tb/assets/mainTB_Save.svg");
     m_mainToolBar->addAction(ui->mainSaveFileAs);
+    ThemeManager::registerActionIcon(ui->mainSaveFileAs, ":/tb/assets/mainTB_SaveAs.svg");
     m_mainToolBar->addSeparator();
     m_mainToolBar->addAction(ui->mainEditCopy);
+    ThemeManager::registerActionIcon(ui->mainEditCopy, ":/tb/assets/mainTB_Copy.svg");
     m_mainToolBar->addAction(ui->mainEditCut);
+    ThemeManager::registerActionIcon(ui->mainEditCut, ":/tb/assets/mainTB_Cut.svg");
     m_mainToolBar->addAction(ui->mainEditPaste);
+    ThemeManager::registerActionIcon(ui->mainEditPaste, ":/tb/assets/mainTB_Paste.svg");
     m_mainToolBar->addAction(ui->mainEditSelectAll);
+    ThemeManager::registerActionIcon(ui->mainEditSelectAll, ":/tb/assets/mainTB_SelectAll.svg");
     m_mainToolBar->addAction(ui->mainEditUndo);
+    ThemeManager::registerActionIcon(ui->mainEditUndo, ":/tb/assets/mainTB_Undo.svg");
     m_mainToolBar->addAction(ui->mainEditRedo);
+    ThemeManager::registerActionIcon(ui->mainEditRedo, ":/tb/assets/mainTB_Redo.svg");
     m_mainToolBar->addSeparator();
     m_mainToolBar->addAction(ui->mainEditFormatBold);
+    ThemeManager::registerActionIcon(ui->mainEditFormatBold, ":/tb/assets/mainTB_FormatBold.svg");
     m_mainToolBar->addAction(ui->mainEditFormatItalic);
+    ThemeManager::registerActionIcon(ui->mainEditFormatItalic, ":/tb/assets/mainTB_FormatItalic.svg");
     m_mainToolBar->addAction(ui->mainEditFormatStrikethrough);
+    ThemeManager::registerActionIcon(ui->mainEditFormatStrikethrough, ":/tb/assets/mainTB_FormatStrikethrough.svg");
     m_mainToolBar->addAction(ui->mainEditFormatCode);
+    ThemeManager::registerActionIcon(ui->mainEditFormatCode, ":/tb/assets/mainTB_FormatCode.svg");
     m_mainToolBar->addAction(ui->mainEditFormatHighlight);
+    ThemeManager::registerActionIcon(ui->mainEditFormatHighlight, ":/tb/assets/mainTB_FormatHighlight.svg");
     m_mainToolBar->addSeparator();
     m_mainToolBar->addAction(ui->mainOptionsSync);
+    ThemeManager::registerActionIcon(ui->mainOptionsSync, ":/tb/assets/mainTB_Sync.svg");
     QWidget* spacerSmall = new QWidget(this);
     spacerSmall->setMinimumWidth(25);
     m_mainToolBar->addWidget(spacerSmall);
@@ -107,8 +123,13 @@ void MainWindow::createToolBar() {
     QWidget* spacerLarge = new QWidget(this);
     spacerLarge->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_mainToolBar->addWidget(spacerLarge);
+    m_mainToolBar->addAction(ui->mainOptionsTheme);
+    ThemeManager::registerActionIcon(ui->mainOptionsTheme, ":/tb/assets/mainTB_Theme.svg");
+    m_mainToolBar->addSeparator();
     m_mainToolBar->addAction(ui->mainAppInfo);
+    ThemeManager::registerActionIcon(ui->mainAppInfo, ":/tb/assets/mainTB_Info.svg");
     m_mainToolBar->addAction(ui->mainAppQuit);
+    ThemeManager::registerActionIcon(ui->mainAppQuit, ":/tb/assets/mainTB_Quit_2.svg");
 }
 
 void MainWindow::createMdViewer() {
@@ -117,6 +138,7 @@ void MainWindow::createMdViewer() {
     m_mdViewer->setLineWrapMode(QTextEdit::WidgetWidth);
     m_mdViewer->setAcceptRichText(false);
     m_mdViewer->setOpenExternalLinks(true);
+    m_mdViewer->setAutoFillBackground(true);
 }
 
 void MainWindow::createMdEditor() {
@@ -126,6 +148,7 @@ void MainWindow::createMdEditor() {
     m_mdEditor->setLineWrapMode(QTextEdit::WidgetWidth);
     m_mdEditor->setOverwriteMode(false);
     m_mdEditor->setUndoRedoEnabled(true);
+    m_mdEditor->setAutoFillBackground(true);
 }
 
 void MainWindow::createSplitter() {
@@ -133,35 +156,14 @@ void MainWindow::createSplitter() {
     m_mainSplitter->addWidget(m_mdEditor);
     m_mainSplitter->addWidget(m_mdViewer);
     m_mainSplitter->setSizes({1, 1});
-    m_mainSplitter->setStyleSheet(styleSplitterHandle);
+    m_mainSplitter->setHandleWidth(1);
+    m_mainSplitter->setAutoFillBackground(true);
 }
 
 void MainWindow::createStatusBar() {
     m_statusBar = new QStatusBar(this);
     this->setStatusBar(m_statusBar);
     m_statusBar->setStyleSheet(styleStatusBar);
-}
-
-// ---adapt svg icons to selected theme (light/dark)---
-void MainWindow::setIcons() {
-    ui->mainNewFile->setIcon(createThemedIcon(":/tb/assets/mainTB_New.svg"));
-    ui->mainOpenFile->setIcon(createThemedIcon(":/tb/assets/mainTB_Open.svg"));
-    ui->mainSaveFile->setIcon(createThemedIcon(":/tb/assets/mainTB_Save.svg"));
-    ui->mainSaveFileAs->setIcon(createThemedIcon(":/tb/assets/mainTB_SaveAs.svg"));
-    ui->mainAppInfo->setIcon(createThemedIcon(":/tb/assets/mainTB_Info.svg"));
-    ui->mainAppQuit->setIcon(createThemedIcon(":/tb/assets/mainTB_Quit_2.svg"));
-    ui->mainEditCopy->setIcon(createThemedIcon(":/tb/assets/mainTB_Copy.svg"));
-    ui->mainEditCut->setIcon(createThemedIcon(":/tb/assets/mainTB_Cut.svg"));
-    ui->mainEditPaste->setIcon(createThemedIcon(":/tb/assets/mainTB_Paste.svg"));
-    ui->mainEditSelectAll->setIcon(createThemedIcon(":/tb/assets/mainTB_SelectAll.svg"));
-    ui->mainEditUndo->setIcon(createThemedIcon(":/tb/assets/mainTB_Undo.svg"));
-    ui->mainEditRedo->setIcon(createThemedIcon(":/tb/assets/mainTB_Redo.svg"));
-    ui->mainOptionsSync->setIcon(createThemedIcon(":/tb/assets/mainTB_Sync.svg"));
-    ui->mainEditFormatBold->setIcon(createThemedIcon(":/tb/assets/mainTB_FormatBold.svg"));
-    ui->mainEditFormatItalic->setIcon(createThemedIcon(":/tb/assets/mainTB_FormatItalic.svg"));
-    ui->mainEditFormatStrikethrough->setIcon(createThemedIcon(":/tb/assets/mainTB_FormatStrikethrough.svg"));
-    ui->mainEditFormatCode->setIcon(createThemedIcon(":/tb/assets/mainTB_FormatCode.svg"));
-    ui->mainEditFormatHighlight->setIcon(createThemedIcon(":/tb/assets/mainTB_FormatHighlight.svg"));
 }
 
 void MainWindow::populateMainMenu() {
@@ -186,10 +188,8 @@ void MainWindow::populateMainMenu() {
     ui->menuEdit->addAction(ui->mainEditFormatCode);
     ui->menuEdit->addAction(ui->mainEditFormatHighlight);
     ui->menuOptions->addAction(ui->mainOptionsSync);
-#if !defined (Q_OS_LINUX) // on-the-fly switching doesn't work at all (Fedora, KDE plasma)
     ui->menuOptions->addSeparator();
     ui->menuOptions->addAction(ui->mainOptionsTheme);
-#endif
     ui->menuHelp->addAction(ui->mainAppInfo);
 }
 
@@ -226,18 +226,12 @@ void MainWindow::savePreferences() {
     prefs.PushBoolean(SET_SYNC, m_sync);
     prefs.PushString(SET_LASTFOLDER, m_lastFolder);
     prefs.PushFont(SET_EDITORFONT, m_mdViewer->font());
-    auto *hints = QGuiApplication::styleHints();
-    if (hints->colorScheme() == Qt::ColorScheme::Dark) {
-        prefs.PushString(SET_THEME, DARKTHEME);
-    } else {
-        prefs.PushString(SET_THEME, LIGHTTHEME);
-    }
+    prefs.PushNumber(SET_THEME, static_cast<int>(ThemeManager::getTheme()));
     prefs.SavePreferencesToDefaultLocation(SET_COMPANY, APPNAME);
 }
 
 void MainWindow::loadPreferences() {
     JBPreferences prefs;
-    QString theme = LIGHTTHEME;
     if (prefs.LoadPreferencesFromDefaultLocation(SET_COMPANY, APPNAME)) {
         try {
             restoreGeometry(prefs.PopArray(SET_WGEOMETRY));
@@ -252,13 +246,11 @@ void MainWindow::loadPreferences() {
                 m_mdViewer->setFont(efont);
                 m_mdEditor->setFont(efont);
             }
-            theme = prefs.PopString(SET_THEME);
+            ThemeManager::Theme theme = static_cast<ThemeManager::Theme>(prefs.PopNumber(SET_THEME));
+            ThemeManager::applyTheme(theme);
         }
         catch (...) {}
     }
-    auto *hints = QGuiApplication::styleHints();
-    if (theme == DARKTHEME) hints->setColorScheme(Qt::ColorScheme::Dark);
-    else hints->setColorScheme(Qt::ColorScheme::Light);
     if (m_lastFolder.isEmpty())
         m_lastFolder = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
 }
@@ -317,18 +309,10 @@ void MainWindow::closeEvent(QCloseEvent *e) {
     e->accept();
 }
 
-// ---react to theme changes---
-bool MainWindow::event(QEvent *event) {
-    if (event->type() == QEvent::ThemeChange) {
-        setIcons();
-    }
-    return QMainWindow::event(event);
-}
-
 void MainWindow::onOptionsThemeChanged() {
-    Qt::ColorScheme newScheme = (QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark)
-        ? Qt::ColorScheme::Light : Qt::ColorScheme::Dark;
-    QGuiApplication::styleHints()->setColorScheme(newScheme);
+    ThemeManager::Theme newTheme = (ThemeManager::getTheme() == ThemeManager::Theme::Dark)
+        ? ThemeManager::Theme::Light : ThemeManager::Theme::Dark;
+    ThemeManager::applyTheme(newTheme);
 }
 
 void MainWindow::onTextChanged() {

@@ -3,7 +3,7 @@
 // Purpose:     Constants and text snippets
 // Author:      Jan Buchholz
 // Created:     2025-11-23
-// Changed:     2026-11-20
+// Changed:     2026-11-26
 /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
@@ -21,9 +21,7 @@
 #define SET_THEME "options/theme"
 #define PLACEHOLDER " [*]"
 
-inline const QString APPVERSION = "v2.4";
-inline const QString DARKTHEME = "dark";
-inline const QString LIGHTTHEME = "light";
+inline const QString APPVERSION = "v2.5";
 
 int constexpr DEF_ICONSIZE = 16;
 int constexpr DEF_TB_HEIGHT = 30;

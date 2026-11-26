@@ -3,7 +3,7 @@
 // Purpose:     Handle macOS event and Windows singleton instance
 // Author:      Jan Buchholz
 // Created:     2026-11-01
-// Changed:     2026-11-02
+// Changed:     2026-11-26
 /////////////////////////////////////////////////////////////////////////////
 
 #include "markdownapplication.h"
@@ -26,8 +26,6 @@ bool MarkdownApplication::event(QEvent *event) {
         QString filePath = openEvent->file();
         if (m_mainWindow) {
             m_mainWindow->openFile(filePath);
-            //m_mainWindow->raise();
-            //m_mainWindow->activateWindow();
         } else {
             m_pendingFilePath = filePath;
         }
@@ -57,8 +55,6 @@ void MarkdownApplication::startLocalServer(MainWindow *window) {
                         [window, socket]() {
                         QString file = QString::fromUtf8(socket->readAll());
                         window->openFile(file); // filename received from second instance
-                        //window->raise();
-                        //window->activateWindow();
                         socket->deleteLater();
                     });
             });

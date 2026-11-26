@@ -37,6 +37,7 @@ qt_add_executable(${PROJECT_NAME}
     Info.plist.in
     markdownapplication.h markdownapplication.cpp
     jbfontcombobox.hpp
+    thememanager.hpp
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
