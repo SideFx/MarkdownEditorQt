@@ -16,6 +16,8 @@
 #include <QWidget>
 #include <QAction>
 #include <QPointer>
+#include <QStyleHints>
+#include <QPainter>
 
 class ThemeManager {
 public:
@@ -136,23 +138,17 @@ public:
 
     static void applyTheme(Theme theme) {
         m_theme = theme;
-//#ifdef Q_OS_MACOS
-        // use Qt's own theme switcher for macOS
-        QGuiApplication::styleHints()->setColorScheme(
-            m_theme == Theme::Dark ? Qt::ColorScheme::Dark : Qt::ColorScheme::Light
-        );
-//#else
         // globally set palette
         const QPalette palette = (m_theme == Theme::Dark) ? createDarkPalette() : createLightPalette();
         QApplication::setPalette(palette);
         // redraw everything
-        for (QWidget* widget : QApplication::allWidgets()) {
+        const auto widgets = QApplication::allWidgets(); // because of: c++11 range-loop might detach Qt container
+        for (QWidget* widget : widgets) {
             widget->setPalette(palette);
             widget->style()->unpolish(widget);
             widget->style()->polish(widget);
             widget->update();
         }
-//#endif
         refreshAllThemedIcons();
     }
 
@@ -162,7 +158,8 @@ public:
     }
 
     static void refreshAllThemedIcons() {
-        for (const auto &entry : m_themedIcons) {
+        const auto icons = m_themedIcons; // because of: c++11 range-loop might detach Qt container
+        for (const auto &entry : icons) {
             if (entry.action) {
                 entry.action->setIcon(createThemedIcon(entry.resourcePath));
             }
@@ -189,7 +186,6 @@ private:
         QString resourcePath;
     };
     inline static QList<ThemedIconEntry> m_themedIcons;
-
 };
 
 

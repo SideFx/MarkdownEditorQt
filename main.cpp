@@ -3,7 +3,7 @@
 // Purpose:     Main
 // Author:      Jan Buchholz
 // Created:     2025-11-23
-// Changed:     2026-11-22
+// Changed:     2026-11-26
 /////////////////////////////////////////////////////////////////////////////
 
 #include "mainwindow.h"
@@ -21,11 +21,7 @@ int main(int argc, char *argv[]) {
         if (app.sendFileToRunningInstance(filePath)) return 0;
 #endif
     }
-#if defined (Q_OS_MACOS)
-    app.setStyle(QStyleFactory::create("macos"));
-#else
-    app.setStyle(QStyleFactory::create("fusion"));
-#endif
+    app.setStyle(QStyleFactory::create("Fusion"));
     MainWindow w;
     app.setMainWindow(&w);
     w.show();
