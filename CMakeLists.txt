@@ -21,7 +21,6 @@ qt_add_executable(${PROJECT_NAME}
     mainwindow.cpp
     mainwindow.h
     mainwindow.ui
-    jbstyles.hpp
     constants.h
     jbpreferences.cpp jbpreferences.h
     resources.qrc

@@ -3,7 +3,7 @@
 // Purpose:     The main window
 // Author:      Jan Buchholz
 // Created:     2025-11-23
-// Changed:     2026-11-20
+// Changed:     2026-11-26
 /////////////////////////////////////////////////////////////////////////////
 
 #include "mainwindow.h"
@@ -13,7 +13,6 @@
 #include <QFileInfo>
 #include <QStyleHints>
 #include <QStyleFactory>
-#include "jbstyles.hpp"
 #include "constants.h"
 #include "jbpreferences.h"
 #include "aboutdialog.h"
@@ -42,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     createStatusBar();
     populateMainMenu();
     setCentralWidget(m_mainSplitter);
-    setUnifiedTitleAndToolBarOnMac(false);
+    setUnifiedTitleAndToolBarOnMac(true);
     mc_synchronizer = new ScrollSynchronizer(m_mdEditor, m_mdViewer, this);
     mc_synchelper = new SyncHelper(m_mdEditor, m_mdViewer, this);
     m_sync = true;
@@ -69,7 +68,6 @@ void MainWindow::createToolBar() {
     m_mainToolBar->setAutoFillBackground(true);
     m_mainToolBar->setIconSize(QSize(DEF_ICONSIZE, DEF_ICONSIZE));
     m_mainToolBar->setFixedHeight(DEF_TB_HEIGHT);
-    m_mainToolBar->setStyleSheet(styleToolBar);
 #if defined(Q_OS_MACOS)
     pointSize = 12;
 #endif
@@ -139,6 +137,7 @@ void MainWindow::createMdViewer() {
     m_mdViewer->setAcceptRichText(false);
     m_mdViewer->setOpenExternalLinks(true);
     m_mdViewer->setAutoFillBackground(true);
+    m_mdViewer->setFrameStyle(QStyleOptionFrame::None);
 }
 
 void MainWindow::createMdEditor() {
@@ -149,6 +148,7 @@ void MainWindow::createMdEditor() {
     m_mdEditor->setOverwriteMode(false);
     m_mdEditor->setUndoRedoEnabled(true);
     m_mdEditor->setAutoFillBackground(true);
+    m_mdEditor->setFrameStyle(QStyleOptionFrame::None);
 }
 
 void MainWindow::createSplitter() {
@@ -163,7 +163,7 @@ void MainWindow::createSplitter() {
 void MainWindow::createStatusBar() {
     m_statusBar = new QStatusBar(this);
     this->setStatusBar(m_statusBar);
-    m_statusBar->setStyleSheet(styleStatusBar);
+    m_statusBar->setAutoFillBackground(true);
 }
 
 void MainWindow::populateMainMenu() {
